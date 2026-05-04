@@ -229,24 +229,23 @@ with tab1:
                                textposition="outside", marker_line_width=0)
             st.plotly_chart(style_fig(fig2), use_container_width=True)
 
-        st.subheader("Linear Share by Distributor")
-        lin = (fp.dropna(subset=["Wholesaler", "Linear"])
-                 .groupby("Wholesaler")["Linear"].sum()
-                 .reset_index().sort_values("Linear", ascending=False))
-        tot_lin = lin["Linear"].sum()
-        lin["Share %"] = (lin["Linear"] / tot_lin * 100).round(1) if tot_lin > 0 else 0
-        fig3 = px.bar(lin, x="Wholesaler", y="Share %",
-                      color="Wholesaler", color_discrete_sequence=COLORS,
-                      text="Share %")
-        fig3.update_traces(texttemplate="%{text:.1f}%",
-                           textposition="outside", marker_line_width=0)
-        st.plotly_chart(style_fig(fig3, height=340), use_container_width=True)
+        col_lin, col_sales = st.columns(2)
 
-        st.write("")
-        st.subheader("Sales by Distributor & Brand")
-        col_s1, col_s2 = st.columns(2)
+        with col_lin:
+            st.subheader("Linear Share by Distributor")
+            lin = (fp.dropna(subset=["Wholesaler", "Linear"])
+                     .groupby("Wholesaler")["Linear"].sum()
+                     .reset_index().sort_values("Linear", ascending=False))
+            tot_lin = lin["Linear"].sum()
+            lin["Share %"] = (lin["Linear"] / tot_lin * 100).round(1) if tot_lin > 0 else 0
+            fig3 = px.bar(lin, x="Wholesaler", y="Share %",
+                          color="Wholesaler", color_discrete_sequence=COLORS,
+                          text="Share %")
+            fig3.update_traces(texttemplate="%{text:.1f}%",
+                               textposition="outside", marker_line_width=0)
+            st.plotly_chart(style_fig(fig3, height=380), use_container_width=True)
 
-        with col_s1:
+        with col_sales:
             st.subheader("Sales Share by Distributor")
             fp_s = fp.dropna(subset=["Wholesaler", "Price", "Unit Movement"]).copy()
             fp_s["Sales"] = fp_s["Price"] * fp_s["Unit Movement"]
@@ -259,7 +258,13 @@ with tab1:
                             text="Share %")
             fig_sd.update_traces(texttemplate="%{text:.1f}%",
                                  textposition="outside", marker_line_width=0)
-            st.plotly_chart(style_fig(fig_sd), use_container_width=True)
+            st.plotly_chart(style_fig(fig_sd, height=380), use_container_width=True)
+
+        st.write("")
+        st.subheader("Sales by Brand")
+        col_s1, col_s2 = st.columns(2)
+
+        with col_s1:
 
         with col_s2:
             st.subheader("Sales by Brand (Top 15)")

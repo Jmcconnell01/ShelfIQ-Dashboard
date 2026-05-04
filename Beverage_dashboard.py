@@ -192,7 +192,7 @@ with tab1:
         st.warning("Could not load data — make sure both CSV files are in the same folder as this script.")
     else:
         k1, k2, k3, k4 = st.columns(4)
-        k1.metric("Total SKUs",        len(fp))
+        k1.metric("Total SKUs",        f"{len(fp):,}")
         k2.metric("Total Movement",    f"{fp['Movement'].sum():,.0f}")
         k3.metric("Total Linear (in)", f"{fp['Linear'].sum():,.1f}")
         k4.metric("Total Cubic",       f"{fp['Cubic'].sum():,.0f}")
@@ -316,7 +316,7 @@ with tab2:
         k1.metric("Brewers / Suppliers",
                   fp["Manufacturer"].nunique() if "Manufacturer" in fp.columns else 0)
         k2.metric("Total Movement", f"{fp['Movement'].sum():,.0f}")
-        k3.metric("Total SKUs", len(fp))
+        k3.metric("Total SKUs", f"{len(fp):,}")
 
         st.write("")
         col1, col2 = st.columns(2)

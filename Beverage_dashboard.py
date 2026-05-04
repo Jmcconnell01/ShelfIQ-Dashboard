@@ -45,13 +45,13 @@ def style_fig(fig, height=380):
 # =========================
 # LOAD DATA
 # =========================
+CHAIN_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSvM__YlxRIkpx2tUaqGAb59imnj0AZ6yp0ei0EhusuHB2Q2ypWEQfSSUtagTKs04-nQBBv6aJn7lm2/pub?gid=1239265988&single=true&output=csv"
+PERF_URL  = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRob5VHm3OJmGQlsrnmuRAtOce6Q2d6b7t5gb_QLtQeITg0jFzsEh9kXZI094PPglwh3vpmjSRGb0_D/pub?gid=78966595&single=true&output=csv"
+
 @st.cache_data
 def load_perf_data():
     try:
-        df = pd.read_csv(
-            "Shelf IQ PowerBI 2026 - Chain 2.0.csv",
-            sep=None, engine="python"
-        )
+        df = pd.read_csv(CHAIN_URL)
         df.columns = df.columns.str.strip()
 
         # Plano rows: Division/Linear column holds the chain name
@@ -107,7 +107,8 @@ def load_perf_data():
 
         return perf
 
-    except FileNotFoundError:
+    except Exception as e:
+        st.error(f"Error loading data: {e}")
         return pd.DataFrame()
 
 perf_df = load_perf_data()

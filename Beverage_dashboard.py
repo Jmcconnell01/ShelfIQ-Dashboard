@@ -193,7 +193,7 @@ with tab1:
     else:
         # Calculate avg Day of Supply = (Capacity / Movement) * Movement Period
         dos_df = fp.dropna(subset=["Movement", "Capacity"]).copy()
-        dos_df["DOS"] = (dos_df["Capacity"] / dos_df["Movement"].replace(0, float("nan")))
+        dos_df["DOS"] = (dos_df["Capacity"] / dos_df["Movement"].replace(0, float("nan"))) * 7
         avg_dos = dos_df["DOS"].mean()
 
         k1, k2, k3, k4, k5, k6 = st.columns(6)
@@ -291,7 +291,7 @@ with tab1:
         if sel_store != "All":
             st.subheader(f"SKU Detail — {sel_store}")
             tbl = fp.dropna(subset=["Brand"]).copy()
-            tbl["Day of Supply"] = (tbl["Capacity"] / tbl["Movement"].replace(0, float("nan"))).round(1)
+            tbl["Day of Supply"] = (tbl["Capacity"] / tbl["Movement"].replace(0, float("nan")) * 7).round(1)
             display_cols = [c for c in ["Brand", "Package", "Segment", "Wholesaler",
                                         "Movement", "Facings", "Linear", "Cubic", "Day of Supply"]
                             if c in tbl.columns]
@@ -305,7 +305,7 @@ with tab1:
                      .agg(agg_cols)
                      .sort_values("Movement", ascending=False)
                      .reset_index(drop=True))
-            tbl["Day of Supply"] = (tbl["Capacity"] / tbl["Movement"].replace(0, float("nan"))).round(1)
+            tbl["Day of Supply"] = (tbl["Capacity"] / tbl["Movement"].replace(0, float("nan")) * 7).round(1)
             for c in ["Movement", "Facings", "Linear", "Cubic"]:
                 if c in tbl.columns:
                     tbl[c] = tbl[c].round(1)

@@ -14,12 +14,10 @@ st.set_page_config(
 # =========================
 # CENTERED LOGO
 # =========================
-left, center, right = st.columns([2, 4, 2])
-with center:
-    if os.path.exists("SCP PARTNERS LOGO.png"):
-        st.image("SCP PARTNERS LOGO.png", use_container_width=True)
-    else:
-        st.markdown("## Southern Crown Partners")
+if os.path.exists("SCP PARTNERS LOGO.png"):
+    st.image("SCP PARTNERS LOGO.png", use_container_width=True)
+else:
+    st.markdown("## Southern Crown Partners")
 
 st.write("")
 

@@ -194,7 +194,7 @@ with tab1:
         k1, k2, k3, k4 = st.columns(4)
         k1.metric("Total SKUs",        f"{len(fp):,}")
         k2.metric("Total Movement",    f"{fp['Movement'].sum():,.0f}")
-        k3.metric("Total Linear (in)", f"{fp['Linear'].sum():,.1f}")
+        k3.metric("Total Linear (in)", f"{fp['Linear'].sum():,.0f}")
         k4.metric("Total Cubic",       f"{fp['Cubic'].sum():,.0f}")
 
         st.write("")

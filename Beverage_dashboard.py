@@ -287,24 +287,33 @@ with tab1:
                              yaxis=dict(gridcolor="#1f2433"))
         st.plotly_chart(fig_sb, use_container_width=True)
 
-        st.subheader("SKU Detail (Aggregated Across Stores)")
-        group_by = [c for c in ["Brand", "Package", "Segment", "Wholesaler"] if c in fp.columns]
-        agg_cols = {c: "sum" for c in ["Movement", "Facings", "Linear", "Cubic", "Square"] if c in fp.columns}
-        tbl = (fp.dropna(subset=["Brand"])
-                 .groupby(group_by, as_index=False)
-                 .agg(agg_cols)
-                 .sort_values("Movement", ascending=False)
-                 .reset_index(drop=True))
-        # Calculate Day of Supply = Capacity (Square) / Movement
-        tbl["Day of Supply"] = (tbl["Square"] / tbl["Movement"].replace(0, float("nan"))).round(1)
-        for c in ["Movement", "Facings", "Linear", "Cubic"]:
-            if c in tbl.columns:
-                tbl[c] = tbl[c].round(1)
-        # Drop Square from display, keep Day of Supply
-        display_cols = [c for c in ["Brand", "Package", "Segment", "Wholesaler",
-                                    "Movement", "Facings", "Linear", "Cubic", "Day of Supply"]
-                        if c in tbl.columns]
-        st.dataframe(tbl[display_cols], use_container_width=True, height=360, hide_index=True)
+        # If a specific store is selected show raw SKUs, otherwise aggregate
+        if sel_store != "All":
+            st.subheader(f"SKU Detail — {sel_store}")
+            tbl = fp.dropna(subset=["Brand"]).copy()
+            tbl["Day of Supply"] = (tbl["Square"] / tbl["Movement"].replace(0, float("nan"))).round(1)
+            display_cols = [c for c in ["Brand", "Package", "Segment", "Wholesaler",
+                                        "Movement", "Facings", "Linear", "Cubic", "Day of Supply"]
+                            if c in tbl.columns]
+            tbl = tbl[display_cols].sort_values("Movement", ascending=False).reset_index(drop=True)
+        else:
+            st.subheader("SKU Detail (Aggregated Across Stores)")
+            group_by = [c for c in ["Brand", "Package", "Segment", "Wholesaler"] if c in fp.columns]
+            agg_cols = {c: "sum" for c in ["Movement", "Facings", "Linear", "Cubic", "Square"] if c in fp.columns}
+            tbl = (fp.dropna(subset=["Brand"])
+                     .groupby(group_by, as_index=False)
+                     .agg(agg_cols)
+                     .sort_values("Movement", ascending=False)
+                     .reset_index(drop=True))
+            tbl["Day of Supply"] = (tbl["Square"] / tbl["Movement"].replace(0, float("nan"))).round(1)
+            for c in ["Movement", "Facings", "Linear", "Cubic"]:
+                if c in tbl.columns:
+                    tbl[c] = tbl[c].round(1)
+            display_cols = [c for c in ["Brand", "Package", "Segment", "Wholesaler",
+                                        "Movement", "Facings", "Linear", "Cubic", "Day of Supply"]
+                            if c in tbl.columns]
+            tbl = tbl[display_cols]
+        st.dataframe(tbl, use_container_width=True, height=360, hide_index=True)
         st.download_button("⬇ Download CSV",
                            tbl.to_csv(index=False).encode(),
                            "distributor_space.csv", "text/csv")

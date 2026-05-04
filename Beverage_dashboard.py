@@ -313,11 +313,11 @@ with tab2:
         top_n = st.slider("Number of Brewers / Brands to show", min_value=5, max_value=min(all_brands_count, 50), value=15, step=5)
 
         st.write("")
-        k1, k2, k3 = st.columns(3)
-        k1.metric("Brewers / Suppliers",
-                  fp["Manufacturer"].nunique() if "Manufacturer" in fp.columns else 0)
-        k2.metric("Total Movement", f"{fp['Movement'].sum():,.0f}")
-        k3.metric("Total SKUs", f"{len(fp):,}")
+        k1, k2, k3, k4 = st.columns(4)
+        k1.metric("Store Count",       f"{fp['_StoreLabel'].nunique():,}")
+        k2.metric("Brewers / Suppliers", f"{fp['Manufacturer'].nunique():,}" if "Manufacturer" in fp.columns else 0)
+        k3.metric("Total Movement",    f"{fp['Movement'].sum():,.0f}")
+        k4.metric("Total SKUs",        f"{len(fp):,}")
 
         st.write("")
         col1, col2 = st.columns(2)
@@ -441,6 +441,11 @@ with tab3:
             fp_pod = fp_pod[fp_pod["Segment"] == pod_seg_filter]
         if pod_product != "All":
             fp_pod = fp_pod[fp_pod["Product Name"] == pod_product]
+
+        pk1, pk2, pk3 = st.columns(3)
+        pk1.metric("Store Count",    f"{fp_pod['_StoreLabel'].nunique():,}")
+        pk2.metric("Total SKUs",     f"{len(fp_pod):,}")
+        pk3.metric("Total Movement", f"{fp_pod['Movement'].sum():,.0f}")
 
         st.write("")
         col1, col2 = st.columns(2)
@@ -576,10 +581,11 @@ with tab4:
                        .sort_values("Movement", ascending=False))
         store_sum["Store"] = store_sum["PlanoID"].str.split("|").str[0].str.strip()
 
-        k1, k2, k3 = st.columns(3)
-        k1.metric("Total Stores",     len(store_sum))
+        k1, k2, k3, k4 = st.columns(4)
+        k1.metric("Store Count",      f"{len(store_sum):,}")
         k2.metric("Total Movement",   f"{store_sum['Movement'].sum():,.0f}")
         k3.metric("Avg SKUs / Store", f"{store_sum['SKUs'].mean():.0f}")
+        k4.metric("Total SKUs",       f"{store_sum['SKUs'].sum():,}")
 
         st.write("")
         col1, col2 = st.columns(2)

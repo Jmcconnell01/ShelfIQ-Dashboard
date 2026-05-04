@@ -253,8 +253,8 @@ with tab1:
 
         with col_sales:
             st.subheader("Sales Share by Distributor")
-            fp_s = fp.dropna(subset=["Wholesaler", "Price", "Unit Movement"]).copy()
-            fp_s["Sales"] = fp_s["Price"] * fp_s["Unit Movement"]
+            fp_s = fp.dropna(subset=["Wholesaler", "Price", "Movement"]).copy()
+            fp_s["Sales"] = fp_s["Price"] * fp_s["Movement"]
             sd = (fp_s.groupby("Wholesaler")["Sales"].sum()
                       .reset_index().sort_values("Sales", ascending=False))
             tot_sd = sd["Sales"].sum()
@@ -268,8 +268,8 @@ with tab1:
 
         st.write("")
         st.subheader("Sales by Brand (Top 15)")
-        fp_b = fp.dropna(subset=["Brand", "Price", "Unit Movement"]).copy()
-        fp_b["Sales"] = fp_b["Price"] * fp_b["Unit Movement"]
+        fp_b = fp.dropna(subset=["Brand", "Price", "Movement"]).copy()
+        fp_b["Sales"] = fp_b["Price"] * fp_b["Movement"]
         sb = (fp_b.groupby("Brand")["Sales"].sum()
                   .reset_index().sort_values("Sales", ascending=False).head(15))
         fig_sb = px.bar(sb.sort_values("Sales"),

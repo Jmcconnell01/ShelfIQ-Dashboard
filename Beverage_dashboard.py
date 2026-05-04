@@ -261,31 +261,25 @@ with tab1:
             st.plotly_chart(style_fig(fig_sd, height=380), use_container_width=True)
 
         st.write("")
-        st.subheader("Sales by Brand")
-        col_s1, col_s2 = st.columns(2)
-
-        with col_s1:
-
-        with col_s2:
-            st.subheader("Sales by Brand (Top 15)")
-            fp_b = fp.dropna(subset=["Brand", "Price", "Unit Movement"]).copy()
-            fp_b["Sales"] = fp_b["Price"] * fp_b["Unit Movement"]
-            sb = (fp_b.groupby("Brand")["Sales"].sum()
-                      .reset_index().sort_values("Sales", ascending=False).head(15))
-            fig_sb = px.bar(sb.sort_values("Sales"),
-                            x="Sales", y="Brand", orientation="h",
-                            color="Sales",
-                            color_continuous_scale=[[0, "#1a2535"], [1, "#f0c040"]],
-                            text="Sales")
-            fig_sb.update_traces(texttemplate="$%{text:,.2f}",
-                                 textposition="outside", marker_line_width=0)
-            fig_sb.update_layout(height=460, paper_bgcolor="#13161e",
-                                 plot_bgcolor="#0d0f14", font=dict(color="#c8ccd8"),
-                                 coloraxis_showscale=False,
-                                 margin=dict(l=10, r=10, t=40, b=10),
-                                 xaxis=dict(gridcolor="#1f2433"),
-                                 yaxis=dict(gridcolor="#1f2433"))
-            st.plotly_chart(fig_sb, use_container_width=True)
+        st.subheader("Sales by Brand (Top 15)")
+        fp_b = fp.dropna(subset=["Brand", "Price", "Unit Movement"]).copy()
+        fp_b["Sales"] = fp_b["Price"] * fp_b["Unit Movement"]
+        sb = (fp_b.groupby("Brand")["Sales"].sum()
+                  .reset_index().sort_values("Sales", ascending=False).head(15))
+        fig_sb = px.bar(sb.sort_values("Sales"),
+                        x="Sales", y="Brand", orientation="h",
+                        color="Sales",
+                        color_continuous_scale=[[0, "#1a2535"], [1, "#f0c040"]],
+                        text="Sales")
+        fig_sb.update_traces(texttemplate="$%{text:,.2f}",
+                             textposition="outside", marker_line_width=0)
+        fig_sb.update_layout(height=460, paper_bgcolor="#13161e",
+                             plot_bgcolor="#0d0f14", font=dict(color="#c8ccd8"),
+                             coloraxis_showscale=False,
+                             margin=dict(l=10, r=10, t=40, b=10),
+                             xaxis=dict(gridcolor="#1f2433"),
+                             yaxis=dict(gridcolor="#1f2433"))
+        st.plotly_chart(fig_sb, use_container_width=True)
 
         st.subheader("SKU Detail (Aggregated Across Stores)")
         group_by = [c for c in ["Brand", "Package", "Segment", "Wholesaler"] if c in fp.columns]

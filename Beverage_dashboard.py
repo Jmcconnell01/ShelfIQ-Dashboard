@@ -15,7 +15,7 @@ st.set_page_config(
 # CENTERED LOGO
 # =========================
 if os.path.exists("SCP PARTNERS LOGO.png"):
-    st.image("SCP PARTNERS LOGO.png", use_container_width=True)
+    st.image("SCP PARTNERS LOGO.png", width=400)
 else:
     st.markdown("## Southern Crown Partners")
 

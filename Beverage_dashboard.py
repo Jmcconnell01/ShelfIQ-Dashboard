@@ -582,7 +582,7 @@ with tab4:
         store_sum["Store"] = store_sum["PlanoID"].str.split("|").str[0].str.strip()
 
         k1, k2, k3, k4 = st.columns(4)
-        k1.metric("Store Count",      f"{len(store_sum):,}")
+        k1.metric("Store Count",      f"{fp['_StoreLabel'].nunique():,}")
         k2.metric("Total Movement",   f"{store_sum['Movement'].sum():,.0f}")
         k3.metric("Avg SKUs / Store", f"{store_sum['SKUs'].mean():.0f}")
         k4.metric("Total SKUs",       f"{store_sum['SKUs'].sum():,}")

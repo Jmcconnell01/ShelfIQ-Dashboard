@@ -198,7 +198,7 @@ with tab1:
 
         k1, k2, k3, k4, k5, k6 = st.columns(6)
         k1.metric("Store Count",       f"{fp['_StoreLabel'].nunique():,}")
-        k2.metric("Total SKUs",        f"{len(fp):,}")
+        k2.metric("Total SKUs",        f"{fp['Product Name'].nunique():,}")
         k3.metric("Total Movement",    f"{fp['Movement'].sum():,.0f}")
         k4.metric("Total Cubic",       f"{fp['Cubic'].sum():,.0f}")
         k5.metric("Total Linear (in)", f"{fp['Linear'].sum():,.0f}")
@@ -337,7 +337,7 @@ with tab2:
         k1.metric("Store Count",       f"{fp['_StoreLabel'].nunique():,}")
         k2.metric("Brewers / Suppliers", f"{fp['Manufacturer'].nunique():,}" if "Manufacturer" in fp.columns else 0)
         k3.metric("Total Movement",    f"{fp['Movement'].sum():,.0f}")
-        k4.metric("Total SKUs",        f"{len(fp):,}")
+        k4.metric("Total SKUs",        f"{fp['Product Name'].nunique():,}")
 
         st.write("")
         col1, col2 = st.columns(2)
@@ -464,7 +464,7 @@ with tab3:
 
         pk1, pk2, pk3 = st.columns(3)
         pk1.metric("Store Count",    f"{fp_pod['_StoreLabel'].nunique():,}")
-        pk2.metric("Total SKUs",     f"{len(fp_pod):,}")
+        pk2.metric("Total SKUs",     f"{fp_pod['Product Name'].nunique():,}")
         pk3.metric("Total Movement", f"{fp_pod['Movement'].sum():,.0f}")
 
         st.write("")
@@ -590,7 +590,7 @@ with tab4:
         st.warning("Could not load data — make sure both CSV files are in the same folder as this script.")
     else:
         store_sum = (fp.groupby("PlanoID")
-                       .agg(SKUs     =("Brand",    "count"),
+                       .agg(SKUs     =("Product Name",    "nunique"),
                             Movement =("Movement", "sum"),
                             Linear   =("Linear",   "sum"),
                             Cubic    =("Cubic",    "sum"),
@@ -605,7 +605,7 @@ with tab4:
         k1.metric("Store Count",      f"{fp['_StoreLabel'].nunique():,}")
         k2.metric("Total Movement",   f"{store_sum['Movement'].sum():,.0f}")
         k3.metric("Avg SKUs / Store", f"{store_sum['SKUs'].mean():.0f}")
-        k4.metric("Total SKUs",       f"{store_sum['SKUs'].sum():,}")
+        k4.metric("Total SKUs",       f"{fp['Product Name'].nunique():,}")
 
         st.write("")
         col1, col2 = st.columns(2)

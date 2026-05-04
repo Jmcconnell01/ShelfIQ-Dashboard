@@ -76,11 +76,11 @@ def load_perf_data():
             "Retail Store Number/UPC":        "UPC",
             "Selling LocationType/Name":       "Product Name",
             "Temperature/Assortment Action":   "Wholesaler",
-            "Movement period/Capacity":        "Movement",
+            "Movement period/Capacity":        "Capacity",
             "Division/Linear":                 "Linear",
             "Store State/Square":              "Square",
             "Build Team/Cubic":                "Cubic",
-            "Wholesaler/Unit Movement":        "Unit Movement",
+            "Wholesaler/Unit Movement":        "Movement",
             "Width/Price":                     "Price",
             "Traffic flow/Unit Cost":          "Unit Cost",
             "Number of Stores/Manufacturer":   "Manufacturer",
@@ -94,8 +94,8 @@ def load_perf_data():
             "Chain POG Field 6/Y":             "Y",
         })
 
-        for c in ["Movement", "Linear", "Square", "Cubic",
-                  "Facings", "Unit Movement", "Price", "Unit Cost"]:
+        for c in ["Movement", "Capacity", "Linear", "Square", "Cubic",
+                  "Facings", "Price", "Unit Cost"]:
             perf[c] = pd.to_numeric(perf[c], errors="coerce")
 
         # Attach Chain from Plano rows and build a clean store label
@@ -192,8 +192,8 @@ with tab1:
         st.warning("Could not load data — make sure both CSV files are in the same folder as this script.")
     else:
         # Calculate avg Day of Supply = (Capacity / Movement) * Movement Period
-        dos_df = fp.dropna(subset=["Movement", "Square", "Cubic"]).copy()
-        dos_df["DOS"] = (dos_df["Square"] / dos_df["Movement"].replace(0, float("nan")))
+        dos_df = fp.dropna(subset=["Movement", "Capacity"]).copy()
+        dos_df["DOS"] = (dos_df["Capacity"] / dos_df["Movement"].replace(0, float("nan")))
         avg_dos = dos_df["DOS"].mean()
 
         k1, k2, k3, k4, k5, k6 = st.columns(6)
@@ -291,7 +291,7 @@ with tab1:
         if sel_store != "All":
             st.subheader(f"SKU Detail — {sel_store}")
             tbl = fp.dropna(subset=["Brand"]).copy()
-            tbl["Day of Supply"] = (tbl["Square"] / tbl["Movement"].replace(0, float("nan"))).round(1)
+            tbl["Day of Supply"] = (tbl["Capacity"] / tbl["Movement"].replace(0, float("nan"))).round(1)
             display_cols = [c for c in ["Brand", "Package", "Segment", "Wholesaler",
                                         "Movement", "Facings", "Linear", "Cubic", "Day of Supply"]
                             if c in tbl.columns]
@@ -299,13 +299,13 @@ with tab1:
         else:
             st.subheader("SKU Detail (Aggregated Across Stores)")
             group_by = [c for c in ["Brand", "Package", "Segment", "Wholesaler"] if c in fp.columns]
-            agg_cols = {c: "sum" for c in ["Movement", "Facings", "Linear", "Cubic", "Square"] if c in fp.columns}
+            agg_cols = {c: "sum" for c in ["Movement", "Capacity", "Facings", "Linear", "Cubic"] if c in fp.columns}
             tbl = (fp.dropna(subset=["Brand"])
                      .groupby(group_by, as_index=False)
                      .agg(agg_cols)
                      .sort_values("Movement", ascending=False)
                      .reset_index(drop=True))
-            tbl["Day of Supply"] = (tbl["Square"] / tbl["Movement"].replace(0, float("nan"))).round(1)
+            tbl["Day of Supply"] = (tbl["Capacity"] / tbl["Movement"].replace(0, float("nan"))).round(1)
             for c in ["Movement", "Facings", "Linear", "Cubic"]:
                 if c in tbl.columns:
                     tbl[c] = tbl[c].round(1)

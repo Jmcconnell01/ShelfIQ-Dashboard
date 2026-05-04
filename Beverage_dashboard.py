@@ -191,12 +191,18 @@ with tab1:
     if fp.empty:
         st.warning("Could not load data — make sure both CSV files are in the same folder as this script.")
     else:
-        k1, k2, k3, k4, k5 = st.columns(5)
+        # Calculate avg Day of Supply = (Capacity / Movement) * Movement Period
+        dos_df = fp.dropna(subset=["Movement", "Square", "Cubic"]).copy()
+        dos_df["DOS"] = (dos_df["Square"] / dos_df["Movement"].replace(0, float("nan")))
+        avg_dos = dos_df["DOS"].mean()
+
+        k1, k2, k3, k4, k5, k6 = st.columns(6)
         k1.metric("Store Count",       f"{fp['_StoreLabel'].nunique():,}")
         k2.metric("Total SKUs",        f"{len(fp):,}")
         k3.metric("Total Movement",    f"{fp['Movement'].sum():,.0f}")
-        k4.metric("Total Linear (in)", f"{fp['Linear'].sum():,.0f}")
-        k5.metric("Total Cubic",       f"{fp['Cubic'].sum():,.0f}")
+        k4.metric("Total Cubic",       f"{fp['Cubic'].sum():,.0f}")
+        k5.metric("Total Linear (in)", f"{fp['Linear'].sum():,.0f}")
+        k6.metric("Avg Day of Supply", f"{avg_dos:,.1f}")
 
         st.write("")
         col1, col2 = st.columns(2)

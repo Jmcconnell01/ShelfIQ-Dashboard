@@ -293,7 +293,7 @@ with tab1:
             tbl = fp.dropna(subset=["Brand"]).copy()
             tbl["Day of Supply"] = (tbl["Capacity"] / tbl["Movement"].replace(0, float("nan")) * 7).round(1)
             display_cols = [c for c in ["Brand", "Package", "Segment", "Wholesaler",
-                                        "Movement", "Facings", "Linear", "Cubic", "Day of Supply"]
+                                        "Movement", "Capacity", "Facings", "Linear", "Cubic", "Day of Supply"]
                             if c in tbl.columns]
             tbl = tbl[display_cols].sort_values("Movement", ascending=False).reset_index(drop=True)
         else:
@@ -310,7 +310,7 @@ with tab1:
                 if c in tbl.columns:
                     tbl[c] = tbl[c].round(1)
             display_cols = [c for c in ["Brand", "Package", "Segment", "Wholesaler",
-                                        "Movement", "Facings", "Linear", "Cubic", "Day of Supply"]
+                                        "Movement", "Capacity", "Facings", "Linear", "Cubic", "Day of Supply"]
                             if c in tbl.columns]
             tbl = tbl[display_cols]
         st.dataframe(tbl, use_container_width=True, height=360, hide_index=True)

@@ -138,6 +138,10 @@ sel_state = st.sidebar.multiselect("State", state_opts)
 whl_opts = sorted(perf_df["Wholesaler"].dropna().unique().tolist()) if not perf_df.empty and "Wholesaler" in perf_df.columns else []
 sel_wholesaler = st.sidebar.multiselect("Wholesaler", whl_opts)
 
+# --- Warehouse filter (warehouse numbers e.g. 23912-CHS) ---
+whl_code_opts = sorted(perf_df["Wholesaler Code"].dropna().unique().tolist()) if not perf_df.empty and "Wholesaler Code" in perf_df.columns else []
+sel_wholesaler_code = st.sidebar.multiselect("Warehouse", whl_code_opts)
+
 # --- Segment filter ---
 seg_opts = sorted(perf_df["Segment"].dropna().unique().tolist()) if not perf_df.empty and "Segment" in perf_df.columns else []
 sel_segment = st.sidebar.multiselect("Segment", seg_opts)
@@ -154,6 +158,8 @@ def apply_filters(df):
         d = d[d["State"].isin(sel_state)]
     if sel_wholesaler and "Wholesaler" in d.columns:
         d = d[d["Wholesaler"].isin(sel_wholesaler)]
+    if sel_wholesaler_code and "Wholesaler Code" in d.columns:
+        d = d[d["Wholesaler Code"].isin(sel_wholesaler_code)]
     if sel_segment and "Segment" in d.columns:
         d = d[d["Segment"].isin(sel_segment)]
     return d

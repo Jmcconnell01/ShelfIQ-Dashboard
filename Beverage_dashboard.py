@@ -499,7 +499,7 @@ with tab3:
             st.plotly_chart(fig, use_container_width=True)
 
         with col2:
-            st.subheader("POD Count by Wholesaler")
+            st.subheader("POD Count by Warehouse")
             pod_m = (fp_pod.groupby("Wholesaler Code")["PlanoID"].nunique()
                        .reset_index(name="POD Count")
                        .sort_values("POD Count", ascending=False))

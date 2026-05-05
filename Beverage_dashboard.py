@@ -422,7 +422,7 @@ with tab3:
         st.warning("Could not load data — make sure both CSV files are in the same folder as this script.")
     else:
         # --- Product filters ---
-        pf1, pf2, pf3, pf4 = st.columns(4)
+        pf1, pf2, pf3 = st.columns(3)
         with pf1:
             mfr_opts = sorted(fp["Manufacturer"].dropna().unique().tolist())
             pod_mfr = st.multiselect("Filter by Manufacturer", mfr_opts, key="pod_mfr")
@@ -434,8 +434,14 @@ with tab3:
             seg_pool = brand_pool if not pod_brand else brand_pool[brand_pool["Brand"].isin(pod_brand)]
             seg_opts2 = sorted(seg_pool["Segment"].dropna().unique().tolist())
             pod_seg_filter = st.multiselect("Filter by Segment", seg_opts2, key="pod_seg")
+
+        pf4, pf5 = st.columns(2)
         with pf4:
-            prod_pool = seg_pool if not pod_seg_filter else seg_pool[seg_pool["Segment"].isin(pod_seg_filter)]
+            pkg_pool = seg_pool if not pod_seg_filter else seg_pool[seg_pool["Segment"].isin(pod_seg_filter)]
+            pkg_opts = sorted(pkg_pool["Package"].dropna().unique().tolist())
+            pod_package = st.multiselect("Filter by Package Size", pkg_opts, key="pod_package")
+        with pf5:
+            prod_pool = pkg_pool if not pod_package else pkg_pool[pkg_pool["Package"].isin(pod_package)]
             prod_opts = sorted(prod_pool["Product Name"].dropna().unique().tolist())
             pod_product = st.multiselect("Filter by Product Name", prod_opts, key="pod_product")
 
@@ -447,6 +453,8 @@ with tab3:
             fp_pod = fp_pod[fp_pod["Brand"].isin(pod_brand)]
         if pod_seg_filter:
             fp_pod = fp_pod[fp_pod["Segment"].isin(pod_seg_filter)]
+        if pod_package:
+            fp_pod = fp_pod[fp_pod["Package"].isin(pod_package)]
         if pod_product:
             fp_pod = fp_pod[fp_pod["Product Name"].isin(pod_product)]
 

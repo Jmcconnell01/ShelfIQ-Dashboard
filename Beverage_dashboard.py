@@ -116,56 +116,46 @@ perf_df = load_perf_data()
 # =========================
 st.sidebar.markdown("## 🔍 Filters")
 
-# --- Chain filter (from Division column in Plano rows) ---
-chain_opts = ["All"]
-if not perf_df.empty and "Chain" in perf_df.columns:
-    chain_opts += sorted(perf_df["Chain"].dropna().unique().tolist())
-sel_chain = st.sidebar.selectbox("Chain", chain_opts)
+# --- Chain filter ---
+chain_opts = sorted(perf_df["Chain"].dropna().unique().tolist()) if not perf_df.empty and "Chain" in perf_df.columns else []
+sel_chain = st.sidebar.multiselect("Chain", chain_opts)
 
 # --- Store filter (cascades from Chain selection) ---
-store_opts = ["All"]
-if not perf_df.empty and "_StoreLabel" in perf_df.columns:
-    store_pool = perf_df.copy()
-    if sel_chain != "All" and "Chain" in store_pool.columns:
-        store_pool = store_pool[store_pool["Chain"] == sel_chain]
-    store_opts += sorted(store_pool["_StoreLabel"].dropna().unique().tolist())
-sel_store = st.sidebar.selectbox("Store", store_opts)
+store_pool = perf_df.copy()
+if sel_chain and "Chain" in store_pool.columns:
+    store_pool = store_pool[store_pool["Chain"].isin(sel_chain)]
+store_opts = sorted(store_pool["_StoreLabel"].dropna().unique().tolist()) if not store_pool.empty and "_StoreLabel" in store_pool.columns else []
+sel_store = st.sidebar.multiselect("Store", store_opts)
 
 # --- State filter (cascades from Chain) ---
-state_opts = ["All"]
-if not perf_df.empty and "State" in perf_df.columns:
-    state_pool = perf_df.copy()
-    if sel_chain != "All" and "Chain" in state_pool.columns:
-        state_pool = state_pool[state_pool["Chain"] == sel_chain]
-    state_opts += sorted(state_pool["State"].dropna().unique().tolist())
-sel_state = st.sidebar.selectbox("State", state_opts)
+state_pool = perf_df.copy()
+if sel_chain and "Chain" in state_pool.columns:
+    state_pool = state_pool[state_pool["Chain"].isin(sel_chain)]
+state_opts = sorted(state_pool["State"].dropna().unique().tolist()) if not state_pool.empty and "State" in state_pool.columns else []
+sel_state = st.sidebar.multiselect("State", state_opts)
 
 # --- Wholesaler filter ---
-whl_opts = ["All"]
-if not perf_df.empty and "Wholesaler" in perf_df.columns:
-    whl_opts += sorted(perf_df["Wholesaler"].dropna().unique().tolist())
-sel_wholesaler = st.sidebar.selectbox("Wholesaler", whl_opts)
+whl_opts = sorted(perf_df["Wholesaler"].dropna().unique().tolist()) if not perf_df.empty and "Wholesaler" in perf_df.columns else []
+sel_wholesaler = st.sidebar.multiselect("Wholesaler", whl_opts)
 
 # --- Segment filter ---
-seg_opts = ["All"]
-if not perf_df.empty and "Segment" in perf_df.columns:
-    seg_opts += sorted(perf_df["Segment"].dropna().unique().tolist())
-sel_segment = st.sidebar.selectbox("Segment", seg_opts)
+seg_opts = sorted(perf_df["Segment"].dropna().unique().tolist()) if not perf_df.empty and "Segment" in perf_df.columns else []
+sel_segment = st.sidebar.multiselect("Segment", seg_opts)
 
 def apply_filters(df):
     d = df.copy()
     if "PlanoID" in d.columns:
         d["_StoreLabel"] = d["PlanoID"].str.split("|").str[0].str.strip()
-    if sel_chain != "All" and "Chain" in d.columns:
-        d = d[d["Chain"] == sel_chain]
-    if sel_store != "All" and "_StoreLabel" in d.columns:
-        d = d[d["_StoreLabel"] == sel_store]
-    if sel_state != "All" and "State" in d.columns:
-        d = d[d["State"] == sel_state]
-    if sel_wholesaler != "All" and "Wholesaler" in d.columns:
-        d = d[d["Wholesaler"] == sel_wholesaler]
-    if sel_segment != "All" and "Segment" in d.columns:
-        d = d[d["Segment"] == sel_segment]
+    if sel_chain and "Chain" in d.columns:
+        d = d[d["Chain"].isin(sel_chain)]
+    if sel_store and "_StoreLabel" in d.columns:
+        d = d[d["_StoreLabel"].isin(sel_store)]
+    if sel_state and "State" in d.columns:
+        d = d[d["State"].isin(sel_state)]
+    if sel_wholesaler and "Wholesaler" in d.columns:
+        d = d[d["Wholesaler"].isin(sel_wholesaler)]
+    if sel_segment and "Segment" in d.columns:
+        d = d[d["Segment"].isin(sel_segment)]
     return d
 
 fp = apply_filters(perf_df) if not perf_df.empty else pd.DataFrame()
@@ -286,7 +276,7 @@ with tab1:
         st.plotly_chart(fig_sb, use_container_width=True)
 
         # If a specific store is selected show raw SKUs, otherwise aggregate
-        if sel_store != "All":
+        if sel_store:
             st.subheader(f"SKU Detail — {sel_store}")
             tbl = fp.dropna(subset=["Brand"]).copy()
             tbl["Day of Supply"] = (tbl["Capacity"] / tbl["Movement"].replace(0, float("nan")) * 7).round(1)
@@ -434,31 +424,31 @@ with tab3:
         # --- Product filters ---
         pf1, pf2, pf3, pf4 = st.columns(4)
         with pf1:
-            mfr_opts = ["All"] + sorted(fp["Manufacturer"].dropna().unique().tolist())
-            pod_mfr = st.selectbox("Filter by Manufacturer", mfr_opts, key="pod_mfr")
+            mfr_opts = sorted(fp["Manufacturer"].dropna().unique().tolist())
+            pod_mfr = st.multiselect("Filter by Manufacturer", mfr_opts, key="pod_mfr")
         with pf2:
-            brand_pool = fp if pod_mfr == "All" else fp[fp["Manufacturer"] == pod_mfr]
-            brand_opts = ["All"] + sorted(brand_pool["Brand"].dropna().unique().tolist())
-            pod_brand = st.selectbox("Filter by Brand", brand_opts, key="pod_brand")
+            brand_pool = fp if not pod_mfr else fp[fp["Manufacturer"].isin(pod_mfr)]
+            brand_opts = sorted(brand_pool["Brand"].dropna().unique().tolist())
+            pod_brand = st.multiselect("Filter by Brand", brand_opts, key="pod_brand")
         with pf3:
-            seg_pool = brand_pool if pod_brand == "All" else brand_pool[brand_pool["Brand"] == pod_brand]
-            seg_opts2 = ["All"] + sorted(seg_pool["Segment"].dropna().unique().tolist())
-            pod_seg_filter = st.selectbox("Filter by Segment", seg_opts2, key="pod_seg")
+            seg_pool = brand_pool if not pod_brand else brand_pool[brand_pool["Brand"].isin(pod_brand)]
+            seg_opts2 = sorted(seg_pool["Segment"].dropna().unique().tolist())
+            pod_seg_filter = st.multiselect("Filter by Segment", seg_opts2, key="pod_seg")
         with pf4:
-            prod_pool = seg_pool if pod_seg_filter == "All" else seg_pool[seg_pool["Segment"] == pod_seg_filter]
-            prod_opts = ["All"] + sorted(prod_pool["Product Name"].dropna().unique().tolist())
-            pod_product = st.selectbox("Filter by Product Name", prod_opts, key="pod_product")
+            prod_pool = seg_pool if not pod_seg_filter else seg_pool[seg_pool["Segment"].isin(pod_seg_filter)]
+            prod_opts = sorted(prod_pool["Product Name"].dropna().unique().tolist())
+            pod_product = st.multiselect("Filter by Product Name", prod_opts, key="pod_product")
 
         # Apply product filters
         fp_pod = fp.copy()
-        if pod_mfr != "All":
-            fp_pod = fp_pod[fp_pod["Manufacturer"] == pod_mfr]
-        if pod_brand != "All":
-            fp_pod = fp_pod[fp_pod["Brand"] == pod_brand]
-        if pod_seg_filter != "All":
-            fp_pod = fp_pod[fp_pod["Segment"] == pod_seg_filter]
-        if pod_product != "All":
-            fp_pod = fp_pod[fp_pod["Product Name"] == pod_product]
+        if pod_mfr:
+            fp_pod = fp_pod[fp_pod["Manufacturer"].isin(pod_mfr)]
+        if pod_brand:
+            fp_pod = fp_pod[fp_pod["Brand"].isin(pod_brand)]
+        if pod_seg_filter:
+            fp_pod = fp_pod[fp_pod["Segment"].isin(pod_seg_filter)]
+        if pod_product:
+            fp_pod = fp_pod[fp_pod["Product Name"].isin(pod_product)]
 
         pk1, pk2, pk3 = st.columns(3)
         pk1.metric("Store Count",    f"{fp_pod['_StoreLabel'].nunique():,}")

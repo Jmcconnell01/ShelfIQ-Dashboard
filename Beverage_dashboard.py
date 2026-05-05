@@ -557,13 +557,17 @@ with tab3:
             st.plotly_chart(style_fig(fig3, 320), use_container_width=True)
 
         st.subheader("Full POD Detail Table")
-        group_cols = [c for c in ["Manufacturer", "Brand", "Package", "Segment"]
-                      if c in fp_pod.columns]
-        pod_full = (fp_pod.groupby(group_cols)["PlanoID"].nunique()
-                      .reset_index(name="POD Count")
-                      .sort_values("POD Count", ascending=False)
-                      .reset_index(drop=True))
-        st.dataframe(pod_full, use_container_width=True, height=380)
+        # One row per Store + Product combination
+        detail_cols = [c for c in ["Chain", "_StoreLabel", "Wholesaler Code",
+                                   "Manufacturer", "Brand", "Package", "Segment",
+                                   "Product Name", "Movement", "Capacity", "Facings"]
+                       if c in fp_pod.columns]
+        pod_full = (fp_pod[detail_cols]
+                    .dropna(subset=["Product Name"])
+                    .sort_values(["Chain", "_StoreLabel", "Brand", "Product Name"])
+                    .reset_index(drop=True))
+        pod_full = pod_full.rename(columns={"_StoreLabel": "Store"})
+        st.dataframe(pod_full, use_container_width=True, height=450, hide_index=True)
         st.download_button("⬇ Download CSV",
                            pod_full.to_csv(index=False).encode(),
                            "pod_report.csv", "text/csv")

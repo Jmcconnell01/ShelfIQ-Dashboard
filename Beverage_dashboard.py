@@ -45,14 +45,11 @@ def style_fig(fig, height=380):
 # =========================
 CHAIN_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSvM__YlxRIkpx2tUaqGAb59imnj0AZ6yp0ei0EhusuHB2Q2ypWEQfSSUtagTKs04-nQBBv6aJn7lm2/pub?gid=1239265988&single=true&output=csv"
 PERF_URL  = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRob5VHm3OJmGQlsrnmuRAtOce6Q2d6b7t5gb_QLtQeITg0jFzsEh9kXZI094PPglwh3vpmjSRGb0_D/pub?gid=78966595&single=true&output=csv"
-FOOD_LION_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRKyeQVLqw7GOTCP1sdUF_cloUcq9onp_JNjJtkjj8Cocuguxb_7CYTdjkDb_JfwCiqyEmZ8PWdWep5/pub?gid=277184806&single=true&output=csv"
 
 @st.cache_data
 def load_perf_data():
     try:
         df = pd.read_csv(CHAIN_URL)
-        df2 = pd.read_csv(FOOD_LION_URL)
-        df = pd.concat([df, df2], ignore_index=True)
         df.columns = df.columns.str.strip()
 
         # Plano rows: Division/Linear column holds the chain name

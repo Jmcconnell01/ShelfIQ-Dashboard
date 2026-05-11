@@ -45,11 +45,14 @@ def style_fig(fig, height=380):
 # =========================
 CHAIN_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSvM__YlxRIkpx2tUaqGAb59imnj0AZ6yp0ei0EhusuHB2Q2ypWEQfSSUtagTKs04-nQBBv6aJn7lm2/pub?gid=1239265988&single=true&output=csv"
 PERF_URL  = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRob5VHm3OJmGQlsrnmuRAtOce6Q2d6b7t5gb_QLtQeITg0jFzsEh9kXZI094PPglwh3vpmjSRGb0_D/pub?gid=78966595&single=true&output=csv"
+FOOD_LION_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRKyeQVLqw7GOTCP1sdUF_cloUcq9onp_JNjJtkjj8Cocuguxb_7CYTdjkDb_JfwCiqyEmZ8PWdWep5/pub?gid=277184806&single=true&output=csv"
 
 @st.cache_data
 def load_perf_data():
     try:
         df = pd.read_csv(CHAIN_URL)
+        df2 = pd.read_csv(FOOD_LION_URL)
+        df = pd.concat([df, df2], ignore_index=True)
         df.columns = df.columns.str.strip()
 
         # Plano rows: Division/Linear column holds the chain name
@@ -134,12 +137,13 @@ if sel_chain and "Chain" in state_pool.columns:
 state_opts = sorted(state_pool["State"].dropna().unique().tolist()) if not state_pool.empty and "State" in state_pool.columns else []
 sel_state = st.sidebar.multiselect("State", state_opts)
 
-# --- Wholesaler filter ---
-whl_opts = sorted(perf_df["Wholesaler"].dropna().unique().tolist()) if not perf_df.empty and "Wholesaler" in perf_df.columns else []
-sel_wholesaler = st.sidebar.multiselect("Wholesaler", whl_opts)
-
-# --- Warehouse filter (warehouse numbers e.g. 23912-CHS) ---
-whl_code_opts = sorted(perf_df["Wholesaler Code"].dropna().unique().tolist()) if not perf_df.empty and "Wholesaler Code" in perf_df.columns else []
+# --- Warehouse filter (cascades from State) ---
+whl_code_pool = perf_df.copy()
+if sel_chain and "Chain" in whl_code_pool.columns:
+    whl_code_pool = whl_code_pool[whl_code_pool["Chain"].isin(sel_chain)]
+if sel_state and "State" in whl_code_pool.columns:
+    whl_code_pool = whl_code_pool[whl_code_pool["State"].isin(sel_state)]
+whl_code_opts = sorted(whl_code_pool["Wholesaler Code"].dropna().unique().tolist()) if "Wholesaler Code" in whl_code_pool.columns else []
 sel_wholesaler_code = st.sidebar.multiselect("Warehouse", whl_code_opts)
 
 # --- Segment filter ---
@@ -156,8 +160,6 @@ def apply_filters(df):
         d = d[d["_StoreLabel"].isin(sel_store)]
     if sel_state and "State" in d.columns:
         d = d[d["State"].isin(sel_state)]
-    if sel_wholesaler and "Wholesaler" in d.columns:
-        d = d[d["Wholesaler"].isin(sel_wholesaler)]
     if sel_wholesaler_code and "Wholesaler Code" in d.columns:
         d = d[d["Wholesaler Code"].isin(sel_wholesaler_code)]
     if sel_segment and "Segment" in d.columns:

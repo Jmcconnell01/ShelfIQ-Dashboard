@@ -12,12 +12,61 @@ st.set_page_config(
 )
 
 # =========================
+# LOGIN GATE
+# =========================
+def _check_login():
+    import os as _os_login
+    _pw = st.secrets.get("DASHBOARD_PASSWORD", None) if hasattr(st, "secrets") else None
+    if _pw is None:
+        _pw = _os_login.environ.get("DASHBOARD_PASSWORD", "Sharpentheedge")
+
+    if st.session_state.get("_authenticated"):
+        return True
+
+    st.markdown("""
+    <style>
+      .login-wrap {
+        max-width: 420px; margin: 80px auto 0; padding: 40px 36px 32px;
+        background: #13161e; border-radius: 12px;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.40);
+        border-top: 4px solid #f0c040;
+      }
+      .login-title { color:#f0c040; font-size:1.35rem; font-weight:700;
+                     letter-spacing:.04em; text-transform:uppercase; margin-bottom:4px; }
+      .login-sub   { color:#8892a4; font-size:0.85rem; margin-bottom:24px; }
+    </style>
+    <div class='login-wrap'>
+      <p class='login-title'>📊 Planogram Dashboard</p>
+      <p class='login-sub'>Southern Crown Partners · Sign in to continue</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    with st.form("login_form"):
+        st.markdown("#### Sign In")
+        entered = st.text_input("Password", type="password", placeholder="Enter password")
+        submitted = st.form_submit_button("Sign In", use_container_width=True)
+
+    if submitted:
+        if entered == _pw:
+            st.session_state["_authenticated"] = True
+            st.rerun()
+        else:
+            st.error("Incorrect password. Please try again.")
+
+    st.stop()
+    return False
+
+_check_login()
+
+# =========================
 # CENTERED LOGO
 # =========================
-if os.path.exists("SCP PARTNERS LOGO.png"):
-    st.image("SCP PARTNERS LOGO.png", width=400)
-else:
-    st.markdown("## Southern Crown Partners")
+left, center, right = st.columns([2, 4, 2])
+with center:
+    if os.path.exists("SCP PARTNERS LOGO.png"):
+        st.image("SCP PARTNERS LOGO.png", use_container_width=True)
+    else:
+        st.markdown("## Southern Crown Partners")
 
 st.write("")
 
@@ -74,11 +123,11 @@ def load_perf_data():
             "Retail Store Number/UPC":        "UPC",
             "Selling LocationType/Name":       "Product Name",
             "Temperature/Assortment Action":   "Wholesaler",
-            "Movement period/Capacity":        "Capacity",
+            "Movement period/Capacity":        "Movement",
             "Division/Linear":                 "Linear",
             "Store State/Square":              "Square",
             "Build Team/Cubic":                "Cubic",
-            "Wholesaler/Unit Movement":        "Movement",
+            "Wholesaler/Unit Movement":        "Unit Movement",
             "Width/Price":                     "Price",
             "Traffic flow/Unit Cost":          "Unit Cost",
             "Number of Stores/Manufacturer":   "Manufacturer",
@@ -92,8 +141,8 @@ def load_perf_data():
             "Chain POG Field 6/Y":             "Y",
         })
 
-        for c in ["Movement", "Capacity", "Linear", "Square", "Cubic",
-                  "Facings", "Price", "Unit Cost"]:
+        for c in ["Movement", "Linear", "Square", "Cubic",
+                  "Facings", "Unit Movement", "Price", "Unit Cost"]:
             perf[c] = pd.to_numeric(perf[c], errors="coerce")
 
         # Attach Chain from Plano rows and build a clean store label
@@ -116,51 +165,56 @@ perf_df = load_perf_data()
 # =========================
 st.sidebar.markdown("## 🔍 Filters")
 
-# --- Chain filter ---
-chain_opts = sorted(perf_df["Chain"].dropna().unique().tolist()) if not perf_df.empty and "Chain" in perf_df.columns else []
-sel_chain = st.sidebar.multiselect("Chain", chain_opts)
+# --- Chain filter (from Division column in Plano rows) ---
+chain_opts = ["All"]
+if not perf_df.empty and "Chain" in perf_df.columns:
+    chain_opts += sorted(perf_df["Chain"].dropna().unique().tolist())
+sel_chain = st.sidebar.selectbox("Chain", chain_opts)
 
 # --- Store filter (cascades from Chain selection) ---
-store_pool = perf_df.copy()
-if sel_chain and "Chain" in store_pool.columns:
-    store_pool = store_pool[store_pool["Chain"].isin(sel_chain)]
-store_opts = sorted(store_pool["_StoreLabel"].dropna().unique().tolist()) if not store_pool.empty and "_StoreLabel" in store_pool.columns else []
-sel_store = st.sidebar.multiselect("Store", store_opts)
+store_opts = ["All"]
+if not perf_df.empty and "_StoreLabel" in perf_df.columns:
+    store_pool = perf_df.copy()
+    if sel_chain != "All" and "Chain" in store_pool.columns:
+        store_pool = store_pool[store_pool["Chain"] == sel_chain]
+    store_opts += sorted(store_pool["_StoreLabel"].dropna().unique().tolist())
+sel_store = st.sidebar.selectbox("Store", store_opts)
 
 # --- State filter (cascades from Chain) ---
-state_pool = perf_df.copy()
-if sel_chain and "Chain" in state_pool.columns:
-    state_pool = state_pool[state_pool["Chain"].isin(sel_chain)]
-state_opts = sorted(state_pool["State"].dropna().unique().tolist()) if not state_pool.empty and "State" in state_pool.columns else []
-sel_state = st.sidebar.multiselect("State", state_opts)
+state_opts = ["All"]
+if not perf_df.empty and "State" in perf_df.columns:
+    state_pool = perf_df.copy()
+    if sel_chain != "All" and "Chain" in state_pool.columns:
+        state_pool = state_pool[state_pool["Chain"] == sel_chain]
+    state_opts += sorted(state_pool["State"].dropna().unique().tolist())
+sel_state = st.sidebar.selectbox("State", state_opts)
 
-# --- Warehouse filter (cascades from State) ---
-whl_code_pool = perf_df.copy()
-if sel_chain and "Chain" in whl_code_pool.columns:
-    whl_code_pool = whl_code_pool[whl_code_pool["Chain"].isin(sel_chain)]
-if sel_state and "State" in whl_code_pool.columns:
-    whl_code_pool = whl_code_pool[whl_code_pool["State"].isin(sel_state)]
-whl_code_opts = sorted(whl_code_pool["Wholesaler Code"].dropna().unique().tolist()) if "Wholesaler Code" in whl_code_pool.columns else []
-sel_wholesaler_code = st.sidebar.multiselect("Warehouse", whl_code_opts)
+# --- Wholesaler filter ---
+whl_opts = ["All"]
+if not perf_df.empty and "Wholesaler" in perf_df.columns:
+    whl_opts += sorted(perf_df["Wholesaler"].dropna().unique().tolist())
+sel_wholesaler = st.sidebar.selectbox("Wholesaler", whl_opts)
 
 # --- Segment filter ---
-seg_opts = sorted(perf_df["Segment"].dropna().unique().tolist()) if not perf_df.empty and "Segment" in perf_df.columns else []
-sel_segment = st.sidebar.multiselect("Segment", seg_opts)
+seg_opts = ["All"]
+if not perf_df.empty and "Segment" in perf_df.columns:
+    seg_opts += sorted(perf_df["Segment"].dropna().unique().tolist())
+sel_segment = st.sidebar.selectbox("Segment", seg_opts)
 
 def apply_filters(df):
     d = df.copy()
     if "PlanoID" in d.columns:
         d["_StoreLabel"] = d["PlanoID"].str.split("|").str[0].str.strip()
-    if sel_chain and "Chain" in d.columns:
-        d = d[d["Chain"].isin(sel_chain)]
-    if sel_store and "_StoreLabel" in d.columns:
-        d = d[d["_StoreLabel"].isin(sel_store)]
-    if sel_state and "State" in d.columns:
-        d = d[d["State"].isin(sel_state)]
-    if sel_wholesaler_code and "Wholesaler Code" in d.columns:
-        d = d[d["Wholesaler Code"].isin(sel_wholesaler_code)]
-    if sel_segment and "Segment" in d.columns:
-        d = d[d["Segment"].isin(sel_segment)]
+    if sel_chain != "All" and "Chain" in d.columns:
+        d = d[d["Chain"] == sel_chain]
+    if sel_store != "All" and "_StoreLabel" in d.columns:
+        d = d[d["_StoreLabel"] == sel_store]
+    if sel_state != "All" and "State" in d.columns:
+        d = d[d["State"] == sel_state]
+    if sel_wholesaler != "All" and "Wholesaler" in d.columns:
+        d = d[d["Wholesaler"] == sel_wholesaler]
+    if sel_segment != "All" and "Segment" in d.columns:
+        d = d[d["Segment"] == sel_segment]
     return d
 
 fp = apply_filters(perf_df) if not perf_df.empty else pd.DataFrame()
@@ -184,18 +238,11 @@ with tab1:
     if fp.empty:
         st.warning("Could not load data — make sure both CSV files are in the same folder as this script.")
     else:
-        # Calculate avg Day of Supply = (Capacity / Movement) * Movement Period
-        dos_df = fp.dropna(subset=["Movement", "Capacity"]).copy()
-        dos_df["DOS"] = (dos_df["Capacity"] / dos_df["Movement"].replace(0, float("nan"))) * 7
-        avg_dos = dos_df["DOS"].mean()
-
-        k1, k2, k3, k4, k5, k6 = st.columns(6)
-        k1.metric("Store Count",       f"{fp['_StoreLabel'].nunique():,}")
-        k2.metric("Total SKUs",        f"{fp['Product Name'].nunique():,}")
-        k3.metric("Total Movement",    f"{fp['Movement'].sum():,.0f}")
+        k1, k2, k3, k4 = st.columns(4)
+        k1.metric("Total SKUs",        len(fp))
+        k2.metric("Total Movement",    f"{fp['Movement'].sum():,.0f}")
+        k3.metric("Total Linear (in)", f"{fp['Linear'].sum():,.1f}")
         k4.metric("Total Cubic",       f"{fp['Cubic'].sum():,.0f}")
-        k5.metric("Total Linear (in)", f"{fp['Linear'].sum():,.0f}")
-        k6.metric("Avg Day of Supply", f"{avg_dos:,.1f}")
 
         st.write("")
         col1, col2 = st.columns(2)
@@ -228,26 +275,27 @@ with tab1:
                                textposition="outside", marker_line_width=0)
             st.plotly_chart(style_fig(fig2), use_container_width=True)
 
-        col_lin, col_sales = st.columns(2)
+        st.subheader("Linear Share by Distributor")
+        lin = (fp.dropna(subset=["Wholesaler", "Linear"])
+                 .groupby("Wholesaler")["Linear"].sum()
+                 .reset_index().sort_values("Linear", ascending=False))
+        tot_lin = lin["Linear"].sum()
+        lin["Share %"] = (lin["Linear"] / tot_lin * 100).round(1) if tot_lin > 0 else 0
+        fig3 = px.bar(lin, x="Wholesaler", y="Share %",
+                      color="Wholesaler", color_discrete_sequence=COLORS,
+                      text="Share %")
+        fig3.update_traces(texttemplate="%{text:.1f}%",
+                           textposition="outside", marker_line_width=0)
+        st.plotly_chart(style_fig(fig3, height=340), use_container_width=True)
 
-        with col_lin:
-            st.subheader("Linear Share by Distributor")
-            lin = (fp.dropna(subset=["Wholesaler", "Linear"])
-                     .groupby("Wholesaler")["Linear"].sum()
-                     .reset_index().sort_values("Linear", ascending=False))
-            tot_lin = lin["Linear"].sum()
-            lin["Share %"] = (lin["Linear"] / tot_lin * 100).round(1) if tot_lin > 0 else 0
-            fig3 = px.bar(lin, x="Wholesaler", y="Share %",
-                          color="Wholesaler", color_discrete_sequence=COLORS,
-                          text="Share %")
-            fig3.update_traces(texttemplate="%{text:.1f}%",
-                               textposition="outside", marker_line_width=0)
-            st.plotly_chart(style_fig(fig3, height=380), use_container_width=True)
+        st.write("")
+        st.subheader("Sales by Distributor & Brand")
+        col_s1, col_s2 = st.columns(2)
 
-        with col_sales:
+        with col_s1:
             st.subheader("Sales Share by Distributor")
-            fp_s = fp.dropna(subset=["Wholesaler", "Price", "Movement"]).copy()
-            fp_s["Sales"] = fp_s["Price"] * fp_s["Movement"]
+            fp_s = fp.dropna(subset=["Wholesaler", "Price", "Unit Movement"]).copy()
+            fp_s["Sales"] = fp_s["Price"] * fp_s["Unit Movement"]
             sd = (fp_s.groupby("Wholesaler")["Sales"].sum()
                       .reset_index().sort_values("Sales", ascending=False))
             tot_sd = sd["Sales"].sum()
@@ -257,55 +305,40 @@ with tab1:
                             text="Share %")
             fig_sd.update_traces(texttemplate="%{text:.1f}%",
                                  textposition="outside", marker_line_width=0)
-            st.plotly_chart(style_fig(fig_sd, height=380), use_container_width=True)
+            st.plotly_chart(style_fig(fig_sd), use_container_width=True)
 
-        st.write("")
-        st.subheader("Sales by Brand (Top 15)")
-        fp_b = fp.dropna(subset=["Brand", "Price", "Movement"]).copy()
-        fp_b["Sales"] = fp_b["Price"] * fp_b["Movement"]
-        sb = (fp_b.groupby("Brand")["Sales"].sum()
-                  .reset_index().sort_values("Sales", ascending=False).head(15))
-        fig_sb = px.bar(sb.sort_values("Sales"),
-                        x="Sales", y="Brand", orientation="h",
-                        color="Sales",
-                        color_continuous_scale=[[0, "#1a2535"], [1, "#f0c040"]],
-                        text="Sales")
-        fig_sb.update_traces(texttemplate="$%{text:,.2f}",
-                             textposition="outside", marker_line_width=0)
-        fig_sb.update_layout(height=460, paper_bgcolor="#13161e",
-                             plot_bgcolor="#0d0f14", font=dict(color="#c8ccd8"),
-                             coloraxis_showscale=False,
-                             margin=dict(l=10, r=10, t=40, b=10),
-                             xaxis=dict(gridcolor="#1f2433"),
-                             yaxis=dict(gridcolor="#1f2433"))
-        st.plotly_chart(fig_sb, use_container_width=True)
+        with col_s2:
+            st.subheader("Sales by Brand (Top 15)")
+            fp_b = fp.dropna(subset=["Brand", "Price", "Unit Movement"]).copy()
+            fp_b["Sales"] = fp_b["Price"] * fp_b["Unit Movement"]
+            sb = (fp_b.groupby("Brand")["Sales"].sum()
+                      .reset_index().sort_values("Sales", ascending=False).head(15))
+            fig_sb = px.bar(sb.sort_values("Sales"),
+                            x="Sales", y="Brand", orientation="h",
+                            color="Sales",
+                            color_continuous_scale=[[0, "#1a2535"], [1, "#f0c040"]],
+                            text="Sales")
+            fig_sb.update_traces(texttemplate="$%{text:,.2f}",
+                                 textposition="outside", marker_line_width=0)
+            fig_sb.update_layout(height=460, paper_bgcolor="#13161e",
+                                 plot_bgcolor="#0d0f14", font=dict(color="#c8ccd8"),
+                                 coloraxis_showscale=False,
+                                 margin=dict(l=10, r=10, t=40, b=10),
+                                 xaxis=dict(gridcolor="#1f2433"),
+                                 yaxis=dict(gridcolor="#1f2433"))
+            st.plotly_chart(fig_sb, use_container_width=True)
 
-        # If a specific store is selected show raw SKUs, otherwise aggregate
-        if sel_store:
-            st.subheader(f"SKU Detail — {sel_store}")
-            tbl = fp.dropna(subset=["Brand"]).copy()
-            tbl["Day of Supply"] = (tbl["Capacity"] / tbl["Movement"].replace(0, float("nan")) * 7).round(1)
-            display_cols = [c for c in ["Brand", "Package", "Segment", "Wholesaler",
-                                        "Movement", "Capacity", "Facings", "Linear", "Cubic", "Day of Supply"]
-                            if c in tbl.columns]
-            tbl = tbl[display_cols].sort_values("Movement", ascending=False).reset_index(drop=True)
-        else:
-            st.subheader("SKU Detail (Aggregated Across Stores)")
-            group_by = [c for c in ["Brand", "Package", "Segment", "Wholesaler"] if c in fp.columns]
-            agg_cols = {c: "sum" for c in ["Movement", "Capacity", "Facings", "Linear", "Cubic"] if c in fp.columns}
-            tbl = (fp.dropna(subset=["Brand"])
-                     .groupby(group_by, as_index=False)
-                     .agg(agg_cols)
-                     .sort_values("Movement", ascending=False)
-                     .reset_index(drop=True))
-            tbl["Day of Supply"] = (tbl["Capacity"] / tbl["Movement"].replace(0, float("nan")) * 7).round(1)
-            for c in ["Movement", "Facings", "Linear", "Cubic"]:
-                if c in tbl.columns:
-                    tbl[c] = tbl[c].round(1)
-            display_cols = [c for c in ["Brand", "Package", "Segment", "Wholesaler",
-                                        "Movement", "Capacity", "Facings", "Linear", "Cubic", "Day of Supply"]
-                            if c in tbl.columns]
-            tbl = tbl[display_cols]
+        st.subheader("SKU Detail (Aggregated Across Stores)")
+        group_by = [c for c in ["Brand", "Package", "Segment", "Wholesaler"] if c in fp.columns]
+        agg_cols = {c: "sum" for c in ["Movement", "Facings", "Linear", "Cubic"] if c in fp.columns}
+        tbl = (fp.dropna(subset=["Brand"])
+                 .groupby(group_by, as_index=False)
+                 .agg(agg_cols)
+                 .sort_values("Movement", ascending=False)
+                 .reset_index(drop=True))
+        for c in ["Movement", "Facings", "Linear", "Cubic"]:
+            if c in tbl.columns:
+                tbl[c] = tbl[c].round(1)
         st.dataframe(tbl, use_container_width=True, height=360, hide_index=True)
         st.download_button("⬇ Download CSV",
                            tbl.to_csv(index=False).encode(),
@@ -326,11 +359,11 @@ with tab2:
         top_n = st.slider("Number of Brewers / Brands to show", min_value=5, max_value=min(all_brands_count, 50), value=15, step=5)
 
         st.write("")
-        k1, k2, k3, k4 = st.columns(4)
-        k1.metric("Store Count",       f"{fp['_StoreLabel'].nunique():,}")
-        k2.metric("Brewers / Suppliers", f"{fp['Manufacturer'].nunique():,}" if "Manufacturer" in fp.columns else 0)
-        k3.metric("Total Movement",    f"{fp['Movement'].sum():,.0f}")
-        k4.metric("Total SKUs",        f"{fp['Product Name'].nunique():,}")
+        k1, k2, k3 = st.columns(3)
+        k1.metric("Brewers / Suppliers",
+                  fp["Manufacturer"].nunique() if "Manufacturer" in fp.columns else 0)
+        k2.metric("Total Movement", f"{fp['Movement'].sum():,.0f}")
+        k3.metric("Total SKUs", len(fp))
 
         st.write("")
         col1, col2 = st.columns(2)
@@ -427,46 +460,33 @@ with tab3:
         st.warning("Could not load data — make sure both CSV files are in the same folder as this script.")
     else:
         # --- Product filters ---
-        pf1, pf2, pf3 = st.columns(3)
+        pf1, pf2, pf3, pf4 = st.columns(4)
         with pf1:
-            mfr_opts = sorted(fp["Manufacturer"].dropna().unique().tolist())
-            pod_mfr = st.multiselect("Filter by Manufacturer", mfr_opts, key="pod_mfr")
+            mfr_opts = ["All"] + sorted(fp["Manufacturer"].dropna().unique().tolist())
+            pod_mfr = st.selectbox("Filter by Manufacturer", mfr_opts, key="pod_mfr")
         with pf2:
-            brand_pool = fp if not pod_mfr else fp[fp["Manufacturer"].isin(pod_mfr)]
-            brand_opts = sorted(brand_pool["Brand"].dropna().unique().tolist())
-            pod_brand = st.multiselect("Filter by Brand", brand_opts, key="pod_brand")
+            brand_pool = fp if pod_mfr == "All" else fp[fp["Manufacturer"] == pod_mfr]
+            brand_opts = ["All"] + sorted(brand_pool["Brand"].dropna().unique().tolist())
+            pod_brand = st.selectbox("Filter by Brand", brand_opts, key="pod_brand")
         with pf3:
-            seg_pool = brand_pool if not pod_brand else brand_pool[brand_pool["Brand"].isin(pod_brand)]
-            seg_opts2 = sorted(seg_pool["Segment"].dropna().unique().tolist())
-            pod_seg_filter = st.multiselect("Filter by Segment", seg_opts2, key="pod_seg")
-
-        pf4, pf5 = st.columns(2)
+            seg_pool = brand_pool if pod_brand == "All" else brand_pool[brand_pool["Brand"] == pod_brand]
+            seg_opts2 = ["All"] + sorted(seg_pool["Segment"].dropna().unique().tolist())
+            pod_seg_filter = st.selectbox("Filter by Segment", seg_opts2, key="pod_seg")
         with pf4:
-            pkg_pool = seg_pool if not pod_seg_filter else seg_pool[seg_pool["Segment"].isin(pod_seg_filter)]
-            pkg_opts = sorted(pkg_pool["Package"].dropna().unique().tolist())
-            pod_package = st.multiselect("Filter by Package Size", pkg_opts, key="pod_package")
-        with pf5:
-            prod_pool = pkg_pool if not pod_package else pkg_pool[pkg_pool["Package"].isin(pod_package)]
-            prod_opts = sorted(prod_pool["Product Name"].dropna().unique().tolist())
-            pod_product = st.multiselect("Filter by Product Name", prod_opts, key="pod_product")
+            prod_pool = seg_pool if pod_seg_filter == "All" else seg_pool[seg_pool["Segment"] == pod_seg_filter]
+            prod_opts = ["All"] + sorted(prod_pool["Product Name"].dropna().unique().tolist())
+            pod_product = st.selectbox("Filter by Product Name", prod_opts, key="pod_product")
 
         # Apply product filters
         fp_pod = fp.copy()
-        if pod_mfr:
-            fp_pod = fp_pod[fp_pod["Manufacturer"].isin(pod_mfr)]
-        if pod_brand:
-            fp_pod = fp_pod[fp_pod["Brand"].isin(pod_brand)]
-        if pod_seg_filter:
-            fp_pod = fp_pod[fp_pod["Segment"].isin(pod_seg_filter)]
-        if pod_package:
-            fp_pod = fp_pod[fp_pod["Package"].isin(pod_package)]
-        if pod_product:
-            fp_pod = fp_pod[fp_pod["Product Name"].isin(pod_product)]
-
-        pk1, pk2, pk3 = st.columns(3)
-        pk1.metric("Store Count",    f"{fp_pod['_StoreLabel'].nunique():,}")
-        pk2.metric("Total SKUs",     f"{fp_pod['Product Name'].nunique():,}")
-        pk3.metric("Total Movement", f"{fp_pod['Movement'].sum():,.0f}")
+        if pod_mfr != "All":
+            fp_pod = fp_pod[fp_pod["Manufacturer"] == pod_mfr]
+        if pod_brand != "All":
+            fp_pod = fp_pod[fp_pod["Brand"] == pod_brand]
+        if pod_seg_filter != "All":
+            fp_pod = fp_pod[fp_pod["Segment"] == pod_seg_filter]
+        if pod_product != "All":
+            fp_pod = fp_pod[fp_pod["Product Name"] == pod_product]
 
         st.write("")
         col1, col2 = st.columns(2)
@@ -498,7 +518,7 @@ with tab3:
             st.plotly_chart(fig, use_container_width=True)
 
         with col2:
-            st.subheader("POD Count by Warehouse")
+            st.subheader("POD Count by Wholesaler")
             pod_m = (fp_pod.groupby("Wholesaler Code")["PlanoID"].nunique()
                        .reset_index(name="POD Count")
                        .sort_values("POD Count", ascending=False))
@@ -570,17 +590,13 @@ with tab3:
             st.plotly_chart(style_fig(fig3, 320), use_container_width=True)
 
         st.subheader("Full POD Detail Table")
-        # One row per Store + Product combination
-        detail_cols = [c for c in ["Chain", "_StoreLabel", "Wholesaler Code",
-                                   "Manufacturer", "Brand", "Package", "Segment",
-                                   "Product Name", "Movement", "Capacity", "Facings"]
-                       if c in fp_pod.columns]
-        pod_full = (fp_pod[detail_cols]
-                    .dropna(subset=["Product Name"])
-                    .sort_values(["Chain", "_StoreLabel", "Brand", "Product Name"])
-                    .reset_index(drop=True))
-        pod_full = pod_full.rename(columns={"_StoreLabel": "Store"})
-        st.dataframe(pod_full, use_container_width=True, height=450, hide_index=True)
+        group_cols = [c for c in ["Manufacturer", "Brand", "Package", "Segment"]
+                      if c in fp_pod.columns]
+        pod_full = (fp_pod.groupby(group_cols)["PlanoID"].nunique()
+                      .reset_index(name="POD Count")
+                      .sort_values("POD Count", ascending=False)
+                      .reset_index(drop=True))
+        st.dataframe(pod_full, use_container_width=True, height=380)
         st.download_button("⬇ Download CSV",
                            pod_full.to_csv(index=False).encode(),
                            "pod_report.csv", "text/csv")
@@ -595,7 +611,7 @@ with tab4:
         st.warning("Could not load data — make sure both CSV files are in the same folder as this script.")
     else:
         store_sum = (fp.groupby("PlanoID")
-                       .agg(SKUs     =("Product Name",    "nunique"),
+                       .agg(SKUs     =("Brand",    "count"),
                             Movement =("Movement", "sum"),
                             Linear   =("Linear",   "sum"),
                             Cubic    =("Cubic",    "sum"),
@@ -606,11 +622,10 @@ with tab4:
                        .sort_values("Movement", ascending=False))
         store_sum["Store"] = store_sum["PlanoID"].str.split("|").str[0].str.strip()
 
-        k1, k2, k3, k4 = st.columns(4)
-        k1.metric("Store Count",      f"{fp['_StoreLabel'].nunique():,}")
+        k1, k2, k3 = st.columns(3)
+        k1.metric("Total Stores",     len(store_sum))
         k2.metric("Total Movement",   f"{store_sum['Movement'].sum():,.0f}")
         k3.metric("Avg SKUs / Store", f"{store_sum['SKUs'].mean():.0f}")
-        k4.metric("Total SKUs",       f"{fp['Product Name'].nunique():,}")
 
         st.write("")
         col1, col2 = st.columns(2)

@@ -134,20 +134,20 @@ sc_chas_data = [
     ('Core', 'Miller Lite 1/16AL', None, 1.49, 1.99, 2.09, 1.79, 1.99, 2.29, 1.99, 2.19, 1.3, None, None, None, None, None),
     ('Core Plus', 'Bud Light Lime 1/16AL', None, 2.49, 2.79, 2.39, 2.39, 2.79, 2.49, 2.69, 2.79, None, None, None, None, None, None),
     ('Core Plus', 'Michelob Ultra 1/16AL', None, 2.49, 2.79, 2.39, 2.39, 2.79, 2.49, 1.99, 2.79, None, None, None, None, None, None),
-    ('Beyond Beer', 'Clubtails Sex On the Beach 1/16C', None, 2.69, 2.69, 2.89, 2.69, 2.79, 2.99, 2.59, 2.99, None, None, None, None, None, None),
-    ('Beyond Beer', 'MD 2020 Spk Punch Sweet Blue Ras 1/16C', None, 1.79, 1.99, 2.39, 1.79, 1.99, 2.79, 1.99, 2.09, None, None, None, None, None, None),
-    ('Beyond Beer', 'Mikes HARDER Lemonade 1/16C', None, 2.69, 2.69, 2.89, 2.39, 2.79, 3.19, 2.79, 2.99, 2.5, None, None, None, None, None),
-    ('Beyond Beer', 'Ritas Lime-A-Rita 1/16C', None, 1.79, 1.99, 2.89, 1.79, 1.99, 2.79, 1.99, 2.09, None, None, None, None, None, None),
+    ('Beyond Beer-Sweet FAB', 'Clubtails Sex On the Beach 1/16C', None, 2.69, 2.69, 2.89, 2.69, 2.79, 2.99, 2.59, 2.99, None, None, None, None, None, None),
+    ('Beyond Beer-Low', 'MD 2020 Spk Punch Sweet Blue Ras 1/16C', None, 1.79, 1.99, 2.39, 1.79, 1.99, 2.79, 1.99, 2.09, None, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'Mikes HARDER Lemonade 1/16C', None, 2.69, 2.69, 2.89, 2.39, 2.79, 3.19, 2.79, 2.99, 2.5, None, None, None, None, None),
+    ('Beyond Beer-Low', 'Ritas Lime-A-Rita 1/16C', None, 1.79, 1.99, 2.89, 1.79, 1.99, 2.79, 1.99, 2.09, None, None, None, None, None, None),
     ('Beyond Beer', "Seagram's Escapes JamaicanMeHapy 1/16C", None, 2.69, 2.69, 2.89, 2.39, 2.79, 2.79, 2.39, 2.59, 1.75, None, None, None, None, None),
-    ('Beyond Beer', 'Smirnoff Ice Smash Peach Mango 1/16C', None, 2.69, 2.69, 2.89, 2.39, 2.79, 3.19, 2.79, 2.99, None, None, None, None, None, None),
-    ('Beyond Beer', 'The Beast Unleashed Mean Green 1/16C', None, 2.69, 2.59, 2.89, 2.39, 2.79, 2.99, 2.69, 2.99, None, None, None, None, None, None),
-    ('Beyond Beer', 'Truly Hd Seltzer Wild Berry 1/16C', None, 2.89, 2.59, 2.89, 2.39, 2.79, 2.99, 2.79, 2.99, None, None, None, None, None, None),
-    ('Premium', 'Stella Artois Import 1/15C', None, 2.79, 2.99, 2.89, 2.39, 2.79, None, None, 2.99, None, None, None, None, None, None),
+    ('Beyond Beer-Sweet FAB', 'Smirnoff Ice Smash Peach Mango 1/16C', None, 2.69, 2.69, 2.89, 2.39, 2.79, 3.19, 2.79, 2.99, None, None, None, None, None, None),
+    ('Beyond Beer-Sweet FAB', 'The Beast Unleashed Mean Green 1/16C', None, 2.69, 2.59, 2.89, 2.39, 2.79, 2.99, 2.69, 2.99, None, None, None, None, None, None),
+    ('Beyond Beer-Seltzer', 'Truly Hd Seltzer Wild Berry 1/16C', None, 2.89, 2.59, 2.89, 2.39, 2.79, 2.99, 2.79, 2.99, None, None, None, None, None, None),
+    ('Super Premium', 'Stella Artois Import 1/15C', None, 2.79, 2.99, 2.89, 2.39, 2.79, None, None, 2.99, None, None, None, None, None, None),
     ('Premium', 'Heineken 1/16C', None, 2.79, 2.99, 2.89, 2.39, 2.79, None, 2.79, None, None, None, None, None, None, None),
     ('Premium', 'Modelo 1/16C', None, 2.79, 2.99, 2.89, 2.39, 2.79, None, 2.79, None, None, None, None, None, None, None),
     ('Premium', 'Corona Extra 1/16C', None, 2.79, 2.99, 2.89, 2.39, 2.79, None, 2.79, 2.99, None, None, None, None, None, None),
     ('Premium', "Redd's Apple Ale 1/16C", None, 2.69, 2.89, 2.89, 2.39, 2.79, 3.19, 2.79, 2.99, None, None, None, None, None, None),
-    ('Beyond Beer', 'Steel Reserve Alloy Spkd Pineapl 1/16C x4', None, 1.99, 1.99, 2.39, 2.39, 1.99, 2.49, None, 2.19, None, None, None, None, None, None),
+    ('Beyond Beer-Low', 'Steel Reserve Alloy Spkd Pineapl 1/16C x4', None, 1.99, 1.99, 2.39, 2.39, 1.99, 2.49, None, 2.19, None, None, None, None, None, None),
     ('Core', 'Coors Light 1/16C x4', None, 1.99, 2.09, 2.09, 1.79, 1.99, None, 1.99, 2.19, None, None, None, None, None, None),
     ('Core', 'Miller Lite 1/16C x4', None, 1.99, 2.09, 2.09, 1.79, 1.99, None, 1.99, 2.19, None, None, None, None, None, None),
     ('Core', 'Yuengling Traditional Lager 1/16C x4', None, 1.99, 1.99, 2.09, 1.79, 1.99, None, 1.99, 2.19, None, None, None, None, None, None),
@@ -161,27 +161,27 @@ sc_chas_data = [
     ('Value', 'Miller High Life 1/16C x6', None, 1.79, 1.89, 1.89, 1.79, 1.89, None, 1.49, 2.09, None, None, None, None, None, None),
     ('Value', 'Natural Light 1/16C x6', None, 1.99, 1.89, 1.89, 1.79, 1.89, None, 1.59, 1.99, None, None, None, None, None, None),
     ('Value', 'Pabst 1/16C x6', None, 1.79, 1.89, 1.89, 1.79, 1.89, None, None, 2.09, None, None, None, None, None, None),
-    ('Beyond Beer', 'Angry Orchard Crisp Apple 1/19C', None, 2.69, 2.69, 2.89, 2.39, 2.79, 2.99, 2.69, 2.99, None, None, None, None, None, None),
-    ('Beyond Beer', 'White Claw Blk Cherry HrdSeltzer 1/19C', None, 3.99, 4.09, 4.09, 3.69, None, 4.29, None, 4.49, 3.35, None, None, None, None, None),
+    ('Beyond Beer-Cider', 'Angry Orchard Crisp Apple 1/19C', None, 2.69, 2.69, 2.89, 2.39, 2.79, 2.99, 2.69, 2.99, None, None, None, None, None, None),
+    ('Beyond Beer-Seltzer', 'White Claw Blk Cherry HrdSeltzer 1/19C', None, 3.99, 4.09, 4.09, 3.69, None, 4.29, None, 4.49, 3.35, None, None, None, None, None),
     ('Super Premium', 'Goose Island Beer HugTropical 1/19C', None, 3.99, 4.09, 3.89, 3.49, 3.99, 4.19, 3.99, 4.39, 3.8, None, None, None, None, None),
     ('Super Premium', 'New Belgium Voodoo Ranger ImpIPA 1/19C', None, 3.99, 4.09, 3.89, 3.49, 3.99, 4.19, None, 4.39, None, None, None, None, None, None),
     ('Super Premium', 'Sweetwater Goin Coastal 1/19C', None, 3.99, 4.29, 3.89, 3.49, 3.99, 4.29, 4.19, 4.49, None, None, None, None, None, None),
     ('Super Premium', 'Terrapin Hopsecutioner IPA 1/19C', None, 3.99, 4.29, 3.89, 3.49, 3.99, 4.29, 4.29, 4.49, None, None, None, None, None, None),
     ('Super Premium', 'Wicked Weed Pernicious IPA 1/19C', None, 3.89, 4.09, 3.89, 3.49, 3.99, 4.19, 3.99, 4.39, 3.8, None, None, None, None, None),
-    ('Beyond Beer', 'Fireball Cinnamon Malt 16.5 1/200B', None, 3.49, None, 3.99, None, None, None, None, 4.99, None, None, None, None, None, None),
+    ('Beyond Beer-Sweet FAB', 'Fireball Cinnamon Malt 16.5 1/200B', None, 3.49, None, 3.99, None, None, None, None, 4.99, None, None, None, None, None, None),
     ('Premium', 'Heineken 1/22B', None, 4.29, 4.69, 4.09, 3.69, 4.29, 4.49, 4.49, 4.49, None, None, None, None, None, None),
     ('Super Premium', 'Stella Artois 1/22B', None, 4.29, None, 4.09, 3.69, 4.49, 4.49, 4.29, 4.49, None, None, None, None, None, None),
-    ('Beyond Beer', 'AriZona Hard Iced Tea Lemon 1/22C', None, 3.89, 4.09, 4.09, 3.69, 3.99, None, None, 4.19, None, None, None, None, None, None),
-    ('Beyond Beer', 'Mikes HARDER Lemonade 1/23.5C', None, 3.99, 4.09, 4.09, 3.69, 3.99, 4.49, 4.29, 4.49, 3.8, None, None, None, None, None),
-    ('Beyond Beer', 'Smirnoff Ice Screwdriver 1/24B', None, 3.99, 4.09, 4.09, 3.69, 3.99, 4.29, 4.29, 4.49, 3.25, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'AriZona Hard Iced Tea Lemon 1/22C', None, 3.89, 4.09, 4.09, 3.69, 3.99, None, None, 4.19, None, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'Mikes HARDER Lemonade 1/23.5C', None, 3.99, 4.09, 4.09, 3.69, 3.99, 4.49, 4.29, 4.49, 3.8, None, None, None, None, None),
+    ('Beyond Beer-Sweet FAB', 'Smirnoff Ice Screwdriver 1/24B', None, 3.99, 4.09, 4.09, 3.69, 3.99, 4.29, 4.29, 4.49, 3.25, None, None, None, None, None),
     ('Premium', 'Corona Extra 1/24B', None, 4.29, 4.49, 4.09, 3.69, 4.29, 4.29, 4.29, 4.49, None, None, None, None, None, None),
-    ('Beyond Beer', 'Arnold Palmer Spkd Half&Half 1/24C', None, 3.89, 4.09, 4.09, 3.69, 3.99, None, 4.29, 4.49, 3.8, None, None, None, None, None),
-    ('Beyond Beer', 'Four Loko Gold 14 pct 1/24C', None, 3.99, 3.69, 4.09, 3.69, 3.99, 3.79, 3.79, 4.19, None, None, None, None, None, None),
-    ('Beyond Beer', 'New Belgium Voodoo Ranger Tea 1/24C', None, 3.89, 4.09, 4.09, 3.69, 3.99, 4.19, None, 4.19, None, None, None, None, None, None),
-    ('Beyond Beer', 'Simply Spiked Lemonade 1/24C', None, 3.99, 4.09, 4.09, 3.69, None, None, 4.29, 4.49, 3.8, None, None, None, None, None),
-    ('Beyond Beer', 'The Beast Tea Original 1/24C', None, 3.99, 3.89, 4.09, None, 3.99, 4.19, 3.99, 4.19, None, None, None, None, None, None),
-    ('Beyond Beer', 'Truly Hd Seltzer Wild Berry 1/24C', None, 3.99, 3.89, 4.09, 3.69, 3.99, None, 3.99, 4.49, 4.45, None, None, None, None, None),
-    ('Beyond Beer', 'Twisted Tea 1/24C', None, 3.99, 3.89, 4.09, 3.99, 3.99, 4.19, 3.49, 4.19, 3.55, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'Arnold Palmer Spkd Half&Half 1/24C', None, 3.89, 4.09, 4.09, 3.69, 3.99, None, 4.29, 4.49, 3.8, None, None, None, None, None),
+    ('Beyond Beer-Sweet FAB', 'Four Loko Gold 14 pct 1/24C', None, 3.99, 3.69, 4.09, 3.69, 3.99, 3.79, 3.79, 4.19, None, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'New Belgium Voodoo Ranger Tea 1/24C', None, 3.89, 4.09, 4.09, 3.69, 3.99, 4.19, None, 4.19, None, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'Simply Spiked Lemonade 1/24C', None, 3.99, 4.09, 4.09, 3.69, None, None, 4.29, 4.49, 3.8, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'The Beast Tea Original 1/24C', None, 3.99, 3.89, 4.09, None, 3.99, 4.19, 3.99, 4.19, None, None, None, None, None, None),
+    ('Beyond Beer-Seltzer', 'Truly Hd Seltzer Wild Berry 1/24C', None, 3.99, 3.89, 4.09, 3.69, 3.99, None, 3.99, 4.49, 4.45, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'Twisted Tea 1/24C', None, 3.99, 3.89, 4.09, 3.99, 3.99, 4.19, 3.49, 4.19, 3.55, None, None, None, None, None),
     ('Core', 'Coors Light 1/24C', None, 3.29, 3.09, 3.09, 3.19, 3.29, 3.39, 3.19, 3.29, 2.8, None, None, None, None, None),
     ('Core', 'Yuengling Traditional Lager 1/24C', None, 3.29, 3.29, 3.09, 2.99, 3.29, 3.39, 3.19, 3.29, 3.1, None, None, None, None, None),
     ('Premium', 'Corona Extra 1/24C', None, 4.29, 4.49, 4.09, 3.69, 4.29, 4.29, 4.29, 4.49, 3.8, None, None, None, None, None),
@@ -212,10 +212,10 @@ sc_chas_data = [
     ('Value', 'Olde Eng 800 1/42PL', None, 3.29, 3.29, 3.39, None, 3.49, None, None, 3.49, None, None, None, None, None, None),
     ('Value', 'Steel Res. High Gravity 1/42PL', None, 3.29, 3.29, 3.39, 2.49, 3.49, 3.49, 3.39, 3.49, 3.3, None, None, None, None, None),
     ('Wine', 'Beatbox Blue Razzberry 1/500BX', None, 4.49, 3.99, 4.49, 3.99, 4.29, 4.99, 4.49, 5.39, 3.7, None, None, None, None, None),
-    ('Beyond Beer', 'Four Loko Pregame Jungle Juice 10 pct 1/7B', None, 2.29, 2.29, 2.89, 2.39, 2.49, 2.99, 2.39, 2.29, None, None, None, None, None, None),
-    ('Beyond Beer', 'Four Loko Pregame Sour Blue Razz 13.9 pct 1/7B', None, 2.29, 2.29, 2.89, 2.39, 2.49, 2.99, 2.39, 2.29, None, None, None, None, None, None),
-    ('Beyond Beer', 'J Bootlegger Alcatraz Sour Apple 10 pct 1/7B', None, 2.29, 2.29, 2.89, 2.39, 2.49, 2.99, 2.49, 2.29, None, None, None, None, None, None),
-    ('Beyond Beer', 'J Bootlegger Sng Sng Sour Grape 12 pct 1/7B', None, 2.29, 2.29, 2.89, 2.39, 2.49, 2.99, 2.49, 2.29, None, None, None, None, None, None),
+    ('Beyond Beer-Sweet FAB', 'Four Loko Pregame Jungle Juice 10 pct 1/7B', None, 2.29, 2.29, 2.89, 2.39, 2.49, 2.99, 2.39, 2.29, None, None, None, None, None, None),
+    ('Beyond Beer-Sweet FAB', 'Four Loko Pregame Sour Blue Razz 13.9 pct 1/7B', None, 2.29, 2.29, 2.89, 2.39, 2.49, 2.99, 2.39, 2.29, None, None, None, None, None, None),
+    ('Beyond Beer-Sweet FAB', 'J Bootlegger Alcatraz Sour Apple 10 pct 1/7B', None, 2.29, 2.29, 2.89, 2.39, 2.49, 2.99, 2.49, 2.29, None, None, None, None, None, None),
+    ('Beyond Beer-Sweet FAB', 'J Bootlegger Sng Sng Sour Grape 12 pct 1/7B', None, 2.29, 2.29, 2.89, 2.39, 2.49, 2.99, 2.49, 2.29, None, None, None, None, None, None),
     ('Wine', 'Big Sipz Chocolate 1/7C', None, 3.99, 3.59, 3.99, 3.49, 3.99, 3.99, None, 4.29, None, None, None, None, None, None),
     ('Wine', 'BuzzBallz Chillers Cocoa Chiller 1/7C', None, 4.49, 3.79, 3.99, 3.99, 4.29, 3.99, 4.49, 4.69, None, None, None, None, None, None),
     ('Super Premium', 'Stella Artois 12/11B', None, 19.99, 21.99, 19.99, 19.99, 18.99, 21.99, 20.49, 21.99, 16.3, None, None, None, None, None),
@@ -227,8 +227,8 @@ sc_chas_data = [
     ('Premium', 'Corona Extra 12/12B', None, 19.99, 20.99, 19.99, 19.99, 19.99, 19.99, 20.49, 21.99, 19.65, None, None, None, None, None),
     ('Premium', 'Heineken 12/12B', None, 19.99, 21.49, 19.99, 19.99, 18.99, 19.99, 19.99, 21.99, 21.6, None, None, None, None, None),
     ('Value', 'Natural Light 12/12B', None, 11.99, 14.49, 12.69, 11.99, 12.49, None, None, 14.59, 12.45, None, None, None, None, None),
-    ('Beyond Beer', 'New Belgium Voodoo Ranger TeaVP1 12/12C', None, 17.99, 19.49, 17.99, 20.99, 18.99, 18.99, None, 18.99, None, None, None, None, None, None),
-    ('Beyond Beer', 'Twisted Tea 12/12C', None, 17.99, 19.49, 17.99, 17.99, 18.99, 18.99, 17.99, 19.49, 17.3, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'New Belgium Voodoo Ranger TeaVP1 12/12C', None, 17.99, 19.49, 17.99, 20.99, 18.99, 18.99, None, 18.99, None, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'Twisted Tea 12/12C', None, 17.99, 19.49, 17.99, 17.99, 18.99, 18.99, 17.99, 19.49, 17.3, None, None, None, None, None),
     ('Core', 'Bud Light 12/12C', None, 14.99, 14.49, 13.99, 14.99, 13.99, 14.49, 13.99, 15.79, 10.95, None, None, None, None, None),
     ('Core', 'Budweiser 12/12C', None, 14.99, 14.49, 13.99, 14.99, 13.99, 14.49, 13.99, 15.79, 10.95, None, None, None, None, None),
     ('Core', 'Miller Lite 12/12C', None, 14.99, 14.49, 13.99, 14.99, 13.99, 14.49, 14.99, 15.79, 10.95, None, None, None, None, None),
@@ -241,22 +241,22 @@ sc_chas_data = [
     ('Value', 'Icehouse 12/12C', None, 11.99, 13.49, 11.49, 11.99, 10.99, 11.49, 11.99, 13.49, 11.25, None, None, None, None, None),
     ('Value', 'Miller High Life 12/12C', None, 11.99, 13.49, 11.49, 11.99, 10.99, 11.49, 11.99, 13.49, 11.25, None, None, None, None, None),
     ('Value', 'Pabst 12/12C', None, 11.99, 13.49, 11.49, 11.99, 10.99, 11.49, 11.99, 13.49, 11.25, None, None, None, None, None),
-    ('Beyond Beer', 'AriZona Hard Iced Tea Variety 12/12C SC', None, 21.99, 21.99, 18.99, 20.99, 18.99, None, None, 18.99, None, None, None, None, None, None),
-    ('Beyond Beer', 'Corona Seltzer Variety Pack 2 12/12C SC', None, None, None, 19.99, 20.99, None, 19.99, 21.49, None, 18.8, None, None, None, None, None),
-    ('Beyond Beer', 'Michelob Ultra Org Seltzer VarP3 12/12C SC', None, 20.99, 21.49, 19.99, 20.99, 19.99, 19.99, None, 21.49, None, None, None, None, None, None),
-    ('Beyond Beer', 'Mikes Hard Variety Pack 12/12C SC', None, 21.99, 23.49, 19.99, None, 19.99, 19.99, None, 22.59, None, None, None, None, None, None),
-    ('Beyond Beer', 'Simply Spiked Lemonade Variety 12/12C SC', None, 21.99, 23.49, 18.99, 20.99, 19.99, 19.99, 21.49, 22.59, 20.25, None, None, None, None, None),
-    ('Beyond Beer', 'The Beast Tea Variety 12/12C SC', None, 17.99, 19.99, 17.99, None, 18.99, 18.99, None, 19.59, None, None, None, None, None, None),
-    ('Beyond Beer', 'The Beast Unleashed Variety 1 12/12C SC', None, 17.99, 19.99, 18.99, 20.99, 18.99, 18.99, 17.49, 19.59, None, None, None, None, None, None),
-    ('Beyond Beer', 'Topo Chico Hd Seltzer Marg VP 12/12C SC', None, 19.99, 23.49, 18.99, 20.99, 19.99, 19.99, 21.49, 22.59, 19.8, None, None, None, None, None),
-    ('Beyond Beer', 'Truly Hd Seltzer Berry Variety 12/12C SC', None, 19.99, 21.49, 19.99, 20.99, 19.99, 19.99, 19.99, 21.59, 18.8, None, None, None, None, None),
-    ('Beyond Beer', 'Vizzy Seltzer Variety 1 12/12C SC', None, 19.99, None, 18.99, 20.99, None, 19.99, 21.49, 22.59, 19.25, None, None, None, None, None),
-    ('Beyond Beer', 'White Claw Variety Pk HrdSeltzer 12/12C SC', None, 19.99, 22.99, 18.99, 20.99, 19.99, 19.99, 17.94, 22.59, 20.25, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'AriZona Hard Iced Tea Variety 12/12C SC', None, 21.99, 21.99, 18.99, 20.99, 18.99, None, None, 18.99, None, None, None, None, None, None),
+    ('Beyond Beer-Seltzer', 'Corona Seltzer Variety Pack 2 12/12C SC', None, None, None, 19.99, 20.99, None, 19.99, 21.49, None, 18.8, None, None, None, None, None),
+    ('Beyond Beer-Seltzer', 'Michelob Ultra Org Seltzer VarP3 12/12C SC', None, 20.99, 21.49, 19.99, 20.99, 19.99, 19.99, None, 21.49, None, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'Mikes Hard Variety Pack 12/12C SC', None, 21.99, 23.49, 19.99, None, 19.99, 19.99, None, 22.59, None, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'Simply Spiked Lemonade Variety 12/12C SC', None, 21.99, 23.49, 18.99, 20.99, 19.99, 19.99, 21.49, 22.59, 20.25, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'The Beast Tea Variety 12/12C SC', None, 17.99, 19.99, 17.99, None, 18.99, 18.99, None, 19.59, None, None, None, None, None, None),
+    ('Beyond Beer-Sweet FAB', 'The Beast Unleashed Variety 1 12/12C SC', None, 17.99, 19.99, 18.99, 20.99, 18.99, 18.99, 17.49, 19.59, None, None, None, None, None, None),
+    ('Beyond Beer-Seltzer', 'Topo Chico Hd Seltzer Marg VP 12/12C SC', None, 19.99, 23.49, 18.99, 20.99, 19.99, 19.99, 21.49, 22.59, 19.8, None, None, None, None, None),
+    ('Beyond Beer-Seltzer', 'Truly Hd Seltzer Berry Variety 12/12C SC', None, 19.99, 21.49, 19.99, 20.99, 19.99, 19.99, 19.99, 21.59, 18.8, None, None, None, None, None),
+    ('Beyond Beer-Seltzer', 'Vizzy Seltzer Variety 1 12/12C SC', None, 19.99, None, 18.99, 20.99, None, 19.99, 21.49, 22.59, 19.25, None, None, None, None, None),
+    ('Beyond Beer-Seltzer', 'White Claw Variety Pk HrdSeltzer 12/12C SC', None, 19.99, 22.99, 18.99, 20.99, 19.99, 19.99, 17.94, 22.59, 20.25, None, None, None, None, None),
     ('Core Plus', 'Bud Light Platinum 12/12C SC', None, 17.49, 18.49, 17.99, 17.99, 16.99, 17.49, 16.49, 19.59, 17, None, None, None, None, None),
     ('Core Plus', 'Michelob Ultra 12/16AL', None, 19.49, 23.49, 19.99, 21.99, 18.99, 17.49, 21.49, 21.19, 23.3, None, None, None, None, None),
-    ('Value', 'Keystone Light 15/12C', None, 9.99, 12.49, 10.99, 12.49, 10.49, None, 10.99, 12.79, 8.95, None, None, None, None, None),
+    ('Value-Low', 'Keystone Light 15/12C', None, 9.99, 12.49, 10.99, 12.49, 10.49, None, 10.99, 12.79, 8.95, None, None, None, None, None),
     ('Value', "Milwaukee's Best Ice 15/12C", None, 9.49, 11.99, 8.49, 12.49, 8.99, None, 10.49, 11.59, 10.1, None, None, None, None, None),
-    ('Value', 'Natural Light 15/12C', None, 11.99, 11.99, 12.49, 12.49, 12.49, 11.99, 12.99, 13.59, 10.95, None, None, None, None, None),
+    ('Value-High', 'Natural Light 15/12C', None, 11.99, 11.99, 12.49, 12.49, 12.49, 11.99, 12.99, 13.59, 10.95, None, None, None, None, None),
     ('Core', 'Bud Light 15/16AL', None, 23.99, 22.99, 21.99, 22.99, 21.99, 21.99, 22.49, 23.59, 22.1, None, None, None, None, None),
     ('Core', 'Budweiser 15/16AL', None, 20.99, 22.99, 21.99, 22.99, 21.99, 21.99, 22.49, 23.59, 22.1, None, None, None, None, None),
     ('Core', 'Coors Light 15/16AL', None, 20.99, 22.49, 20.99, 22.99, 21.99, 21.99, 22.49, 23.59, 20.35, None, None, None, None, None),
@@ -286,7 +286,7 @@ sc_chas_data = [
     ('Value', 'Natural Light 24/12C', None, 20.99, 20.99, 20.99, 22.49, 20.99, 20.99, 20.49, 22.99, 21.55, None, None, None, None, None),
     ('Premium', 'Coronita Extra 24/7B', None, 25.99, 26.49, 24.99, 27.99, 26.99, 26.99, 25.49, 27.59, 18.5, None, None, None, None, None),
     ('Premium', 'Modelo Modelito 24/7B', None, 25.99, 29.99, 24.99, 27.99, 26.99, 25.99, 25.49, 27.59, None, None, None, None, None, None),
-    ('Beyond Beer', 'Twisted Tea 3/24C', None, 9.99, 10.89, 10.99, None, 9.99, None, None, 11.69, None, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'Twisted Tea 3/24C', None, 9.99, 10.89, 10.99, None, 9.99, None, None, 11.69, None, None, None, None, None, None),
     ('Core', 'Miller Lite 3/24C', None, 8.49, 8.69, 7.99, 8.49, 8.99, None, 8.49, 9.59, 7.2, None, None, None, None, None),
     ('Premium', 'Heineken 3/24C', None, 7.49, 8.79, 6.99, 7.49, 6.99, None, None, 8.19, None, None, None, None, None, None),
     ('Premium', 'Modelo 3/24C', None, 10.99, 12.49, 10.99, 10.99, 10.49, None, None, 12.79, 9.3, None, None, None, None, None),
@@ -294,11 +294,11 @@ sc_chas_data = [
     ('Core Plus', 'Michelob Ultra 3/25C', None, 9.99, 10.89, 9.49, 10.49, 9.99, None, 9.99, 10.99, 10.25, None, None, None, None, None),
     ('Value', 'Natural Light 3/25C', None, 7.49, 6.29, 7.89, 6.49, 6.99, None, None, 7.99, 7.1, None, None, None, None, None),
     ('Premium', 'Heineken 4/16C', None, 2.79, 2.99, 2.89, 2.39, 2.79, None, 2.79, 2.99, None, None, None, None, None, None),
-    ('Beyond Beer', 'Mikes Hard Lemonade 6/11B', None, 13.49, 12.79, 12.99, 12.49, 11.99, 14.99, 13.49, 14.99, 11.5, None, None, None, None, None),
-    ('Beyond Beer', 'Smirnoff Ice 6/11B', None, 13.99, 12.79, 11.99, 12.49, 11.49, 14.99, 13.49, 14.29, 11.5, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'Mikes Hard Lemonade 6/11B', None, 13.49, 12.79, 12.99, 12.49, 11.99, 14.99, 13.49, 14.99, 11.5, None, None, None, None, None),
+    ('Beyond Beer-Sweet FAB', 'Smirnoff Ice 6/11B', None, 13.99, 12.79, 11.99, 12.49, 11.49, 14.99, 13.49, 14.29, 11.5, None, None, None, None, None),
     ('Super Premium', 'Stella Artois 6/11B', None, 13.49, 14.19, 13.99, 12.49, 12.99, 14.99, 12.99, 14.99, 11.5, None, None, None, None, None),
-    ('Beyond Beer', 'Angry Orchard Crisp Apple 6/12B', None, 14.49, 13.39, 13.99, 12.49, 12.49, 12.99, 12.99, 14.39, 11.5, None, None, None, None, None),
-    ('Beyond Beer', 'Twisted Tea 6/12B', None, 13.99, 12.29, 13.99, None, 11.99, 12.99, 12.49, 13.99, 11.1, None, None, None, None, None),
+    ('Beyond Beer-Cider', 'Angry Orchard Crisp Apple 6/12B', None, 14.49, 13.39, 13.99, 12.49, 12.49, 12.99, 12.99, 14.39, 11.5, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'Twisted Tea 6/12B', None, 13.99, 12.29, 13.99, None, 11.99, 12.99, 12.49, 13.99, 11.1, None, None, None, None, None),
     ('Core', 'Bud Light 6/12B', None, 9.99, 9.69, 10.69, 9.49, 8.99, 10.99, 9.99, 11.59, 8.68, None, None, None, None, None),
     ('Core', 'Miller Lite 6/12B', None, 10.99, 9.59, 10.69, 9.49, 8.99, 10.99, 9.99, 10.89, 8.65, None, None, None, None, None),
     ('Core', 'Yuengling Traditional Lager 6/12B', None, 10.99, 10.59, 9.99, 9.49, 8.99, 10.99, 9.99, 10.89, 8.65, None, None, None, None, None),
@@ -326,8 +326,8 @@ sc_chas_data = [
 
 SC_MB_COMPETITORS = ['Circle K', 'Refuel Market', 'GPM Southeast', '7-Eleven', 'Parkers', 'Minuteman Food Mart', 'Dollar General', 'Food Lion', 'Publix', 'Walmart', 'Harris Teeter', "Lowe's Foods", 'Kroger']
 sc_mb_data = [
-    ('Beyond Beer', 'Clubtails Sex On the Beach 1/16C', None, 2.69, 2.69, None, 2.69, None, None, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'Twisted Tea 1/24C', None, 3.99, 3.89, None, 3.99, None, None, None, None, None, None, None, None, None),
+    ('Beyond Beer-Sweet FAB', 'Clubtails Sex On the Beach 1/16C', None, 2.69, 2.69, None, 2.69, None, None, None, None, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'Twisted Tea 1/24C', None, 3.99, 3.89, None, 3.99, None, None, None, None, None, None, None, None, None),
     ('Core', 'Coors Light 1/24C', None, 3.29, 3.09, None, 3.19, None, None, None, None, None, None, None, None, None),
     ('Premium', 'Modelo 1/24C', None, 4.29, 3.99, None, 3.99, None, None, None, None, None, None, None, None, None),
     ('Value', 'Icehouse 1/24C', None, 2.99, 2.89, None, 2.89, None, None, None, None, None, None, None, None, None),
@@ -340,15 +340,15 @@ sc_mb_data = [
     ('Core', 'Miller Lite 12/12B', None, 14.99, 15.69, None, 14.99, None, None, None, None, None, None, None, None, None),
     ('Core Plus', 'Michelob Ultra 12/12B', None, 17.99, 17.99, None, 17.99, None, None, None, None, None, None, None, None, None),
     ('Premium', 'Corona Extra 12/12B', None, 19.99, 20.99, None, 19.99, None, None, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'Twisted Tea 12/12C', None, 17.99, 19.49, None, 17.99, None, None, None, None, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'Twisted Tea 12/12C', None, 17.99, 19.49, None, 17.99, None, None, None, None, None, None, None, None, None),
     ('Core', 'Bud Light 12/12C', None, 14.99, 14.49, None, 14.99, None, None, None, None, None, None, None, None, None),
     ('Core', 'Budweiser 12/12C', None, 14.99, 14.49, None, 14.99, None, None, None, None, None, None, None, None, None),
     ('Core', 'Miller Lite 12/12C', None, 14.99, 14.49, None, 14.99, None, None, None, None, None, None, None, None, None),
     ('Core', 'Miller Lite 12/12C', None, 14.99, 14.49, None, 14.99, None, None, None, None, None, None, None, None, None),
     ('Premium', 'Modelo 12/12C', None, 19.99, 20.99, None, 19.99, None, None, None, None, None, None, None, None, None),
     ('Value', 'Busch Light 12/12C', None, 10.99, 11.99, None, 11.99, None, None, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'White Claw Variety Pk HrdSeltzer 12/12C SC', None, 19.99, 22.99, None, 20.99, None, None, None, None, None, None, None, None, None),
-    ('Value', 'Natural Light 15/12C', None, 11.99, 11.99, None, 12.49, None, None, None, None, None, None, None, None, None),
+    ('Beyond Beer-Seltzer', 'White Claw Variety Pk HrdSeltzer 12/12C SC', None, 19.99, 22.99, None, 20.99, None, None, None, None, None, None, None, None, None),
+    ('Value-High', 'Natural Light 15/12C', None, 11.99, 11.99, None, 12.49, None, None, None, None, None, None, None, None, None),
     ('Core', 'Bud Light 15/16AL', None, 23.99, 22.99, None, 22.99, None, None, None, None, None, None, None, None, None),
     ('Core', 'Budweiser 15/16AL', None, 23.99, 22.99, None, 22.99, None, None, None, None, None, None, None, None, None),
     ('Core', 'Miller Lite 15/16AL', None, 23.99, 22.99, None, 22.99, None, None, None, None, None, None, None, None, None),
@@ -379,13 +379,13 @@ sc_col_data = [
     ('Core Plus', 'Michelob Ultra 24/12C', None, 26.49, 28.69, None, 28.49, None, None, None, None, None, None, None, None, None, None, None),
     ('Premium', 'Modelo 12/12C', None, 19.99, 20.99, None, 19.99, None, None, None, None, None, None, None, None, None, None, None),
     ('Premium', 'Modelo 24/12C', None, 32.99, 34.99, None, 32.99, None, None, None, None, None, None, None, None, None, None, None),
-    ('Value', 'Natural Light 15/12C', None, 11.99, 11.99, None, 12.49, None, None, None, None, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'Twisted Tea 12/12C', None, 17.99, 19.49, None, 17.99, None, None, None, None, None, None, None, None, None, None, None),
+    ('Value-High', 'Natural Light 15/12C', None, 11.99, 11.99, None, 12.49, None, None, None, None, None, None, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'Twisted Tea 12/12C', None, 17.99, 19.49, None, 17.99, None, None, None, None, None, None, None, None, None, None, None),
     ('Core', 'Miller Lite 12/12B', None, 14.99, 15.69, None, 14.99, None, None, None, None, None, None, None, None, None, None, None),
     ('Core', 'Miller Lite 12/12C', None, 14.99, 14.49, None, 14.99, None, None, None, None, None, None, None, None, None, None, None),
     ('Core', 'Miller Lite 15/16AL', None, 23.99, 22.99, None, 22.99, None, None, None, None, None, None, None, None, None, None, None),
     ('Core', 'Miller Lite 24/12C', None, 24.49, 25.99, None, 26.49, None, None, None, None, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'White Claw Variety Pk HrdSeltzer 12/12C SC', None, 19.99, 22.99, None, 20.99, None, None, None, None, None, None, None, None, None, None, None),
+    ('Beyond Beer-Seltzer', 'White Claw Variety Pk HrdSeltzer 12/12C SC', None, 19.99, 22.99, None, 20.99, None, None, None, None, None, None, None, None, None, None, None),
 ]
 
 SC_GVL_COMPETITORS = ['Circle K', 'QT', 'Stop-A-Minit', '7-Eleven', 'Spinx', 'Dollar General', 'Food Lion', 'Ingles Markets', 'Walmart', 'Harris Teeter', "Lowe's Foods"]
@@ -406,13 +406,13 @@ sc_gvl_data = [
     ('Core Plus', 'Michelob Ultra 24/12C', None, 26.49, None, None, 28.49, None, None, None, None, None, None, None),
     ('Premium', 'Modelo 12/12C', None, 19.99, None, None, 19.99, None, None, None, None, None, None, None),
     ('Premium', 'Modelo 24/12C', None, 32.99, None, None, 32.99, None, None, None, None, None, None, None),
-    ('Value', 'Natural Light 15/12C', None, 11.99, None, None, 12.49, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'Twisted Tea 12/12C', None, 17.99, None, None, 17.99, None, None, None, None, None, None, None),
+    ('Value-High', 'Natural Light 15/12C', None, 11.99, None, None, 12.49, None, None, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'Twisted Tea 12/12C', None, 17.99, None, None, 17.99, None, None, None, None, None, None, None),
     ('Core', 'Miller Lite 12/12B', None, 14.99, None, None, 14.99, None, None, None, None, None, None, None),
     ('Core', 'Miller Lite 12/12C', None, 14.99, None, None, 14.99, None, None, None, None, None, None, None),
     ('Core', 'Miller Lite 15/16AL', None, 23.99, None, None, 22.99, None, None, None, None, None, None, None),
     ('Core', 'Miller Lite 24/12C', None, 24.49, None, None, 26.49, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'White Claw Variety Pk HrdSeltzer 12/12C SC', None, 19.99, None, None, 20.99, None, None, None, None, None, None, None),
+    ('Beyond Beer-Seltzer', 'White Claw Variety Pk HrdSeltzer 12/12C SC', None, 19.99, None, None, 20.99, None, None, None, None, None, None, None),
 ]
 
 SC_FLO_COMPETITORS = ['Circle K', 'Refuel Market', 'GPM Southeast', '7-Eleven', 'Tucker Oil', 'Smith - Rogers', 'Enmark', 'Dollar General', 'Food Lion', 'Walmart', 'Harris Teeter', "Lowe's Foods"]
@@ -433,13 +433,13 @@ sc_flo_data = [
     ('Core Plus', 'Michelob Ultra 24/12C', None, 26.49, 28.69, None, 28.49, None, None, None, None, None, None, None, None),
     ('Premium', 'Modelo 12/12C', None, 19.99, 20.99, None, 19.99, None, None, None, None, None, None, None, None),
     ('Premium', 'Modelo 24/12C', None, 32.99, 34.99, None, 32.99, None, None, None, None, None, None, None, None),
-    ('Value', 'Natural Light 15/12C', None, 11.99, 11.99, None, 12.49, None, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'Twisted Tea 12/12C', None, 17.99, 19.49, None, 17.99, None, None, None, None, None, None, None, None),
+    ('Value-High', 'Natural Light 15/12C', None, 11.99, 11.99, None, 12.49, None, None, None, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'Twisted Tea 12/12C', None, 17.99, 19.49, None, 17.99, None, None, None, None, None, None, None, None),
     ('Core', 'Miller Lite 12/12B', None, 14.99, 15.69, None, 14.99, None, None, None, None, None, None, None, None),
     ('Core', 'Miller Lite 12/12C', None, 14.99, 14.49, None, 14.99, None, None, None, None, None, None, None, None),
     ('Core', 'Miller Lite 15/16AL', None, 23.99, 22.99, None, 22.99, None, None, None, None, None, None, None, None),
     ('Core', 'Miller Lite 24/12C', None, 24.49, 25.99, None, 26.49, None, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'White Claw Variety Pk HrdSeltzer 12/12C SC', None, 19.99, 22.99, None, 20.99, None, None, None, None, None, None, None, None),
+    ('Beyond Beer-Seltzer', 'White Claw Variety Pk HrdSeltzer 12/12C SC', None, 19.99, 22.99, None, 20.99, None, None, None, None, None, None, None, None),
 ]
 
 SC_SAV_COMPETITORS = ['Circle K', 'Parkers', 'Enmark', 'Dollar General', 'Food Lion', 'Publix', 'Walmart', 'Harris Teeter', 'Kroger']
@@ -475,15 +475,15 @@ sc_sav_data = [
     ('Value', 'Busch Light 12/12B', None, None, 12.49, None, None, None, None, None, None, None),
     ('Value', 'Busch Light 12/12C', None, 10.99, 12.49, None, None, None, None, None, None, None),
     ('Value', 'Busch Light 24/12C', None, 22.99, 22.99, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'Clubtails Sex On the Beach 1/16C', None, None, 2.49, None, None, None, None, None, None, None),
+    ('Beyond Beer-Sweet FAB', 'Clubtails Sex On the Beach 1/16C', None, None, 2.49, None, None, None, None, None, None, None),
     ('Premium', 'Corona Extra 12/12B', None, 19.49, None, None, None, None, None, None, None, None),
     ('Premium', 'Coronita Extra 24/7B', None, 26.99, None, None, None, None, None, None, None, None),
     ('Super Premium', 'Goose Island Beer HugTropical 1/19C', None, None, 3.99, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'J Bootlegger Alcatraz Sour Apple 10 pct 1/7B', None, None, 2.99, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'J Bootlegger Sng Sng Sour Grape 12 pct 1/7B', None, None, 2.99, None, None, None, None, None, None, None),
+    ('Beyond Beer-Sweet FAB', 'J Bootlegger Alcatraz Sour Apple 10 pct 1/7B', None, None, 2.99, None, None, None, None, None, None, None),
+    ('Beyond Beer-Sweet FAB', 'J Bootlegger Sng Sng Sour Grape 12 pct 1/7B', None, None, 2.99, None, None, None, None, None, None, None),
     ('Core Plus', 'Land Shark Lager 12/12C', None, None, 16.99, None, None, None, None, None, None, None),
     ('Core Plus', 'Land Shark Lager 6/12B', None, None, 12.49, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'MD 2020 Spk Punch Sweet Blue Ras 1/16C', None, None, 2.49, None, None, None, None, None, None, None),
+    ('Beyond Beer-Low', 'MD 2020 Spk Punch Sweet Blue Ras 1/16C', None, None, 2.49, None, None, None, None, None, None, None),
     ('Core Plus', 'Michelob Ultra 1/16AL', None, None, 2.59, None, None, None, None, None, None, None),
     ('Core Plus', 'Michelob Ultra 8/16C', None, None, 15.99, None, None, None, None, None, None, None),
     ('Core Plus', 'Michelob Ultra 1/25C', None, None, 3.89, None, None, None, None, None, None, None),
@@ -493,7 +493,7 @@ sc_sav_data = [
     ('Core Plus', 'Michelob Ultra 24/12C', None, 28.99, 28.99, None, None, None, None, None, None, None),
     ('Core Plus', 'Michelob Ultra 6/12B', None, None, 12.49, None, None, None, None, None, None, None),
     ('Core Plus', 'Michelob Ultra 8/16C', None, None, 15.99, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'Michelob Ultra Org Seltzer VarP3 12/12C SC', None, None, 18.99, None, None, None, None, None, None, None),
+    ('Beyond Beer-Seltzer', 'Michelob Ultra Org Seltzer VarP3 12/12C SC', None, None, 18.99, None, None, None, None, None, None, None),
     ('Core', 'Miller Lite 12/12B', None, 13.99, None, None, None, None, None, None, None, None),
     ('Core', 'Miller Lite 12/12B', None, 13.99, None, None, None, None, None, None, None, None),
     ('Core', 'Miller Lite 12/12C', None, 13.99, None, None, None, None, None, None, None, None),
@@ -504,18 +504,18 @@ sc_sav_data = [
     ('Premium', 'Modelo 24/12C', None, 26.99, None, None, None, None, None, None, None, None),
     ('Value', '15.99', None, None, 9.49, None, None, None, None, None, None, None),
     ('Value', 'Natural Light 1/25C', None, None, 2.89, None, None, None, None, None, None, None),
-    ('Value', 'Natural Light 15/12C', None, 12.49, 13.49, None, None, None, None, None, None, None),
+    ('Value-High', 'Natural Light 15/12C', None, 12.49, 13.49, None, None, None, None, None, None, None),
     ('Value', 'Natural Light 24/12C', None, None, 21.99, None, None, None, None, None, None, None),
     ('Super Premium', 'New Belgium Voodoo Ranger ImpIPA 1/19C', None, None, 3.99, None, None, None, None, None, None, None),
     ('Super Premium', 'New Belgium Voodoo Ranger ImpIPA 6/12B', None, None, 13.99, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'New Belgium Voodoo Ranger Tea 1/24C', None, None, 3.99, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'New Belgium Voodoo Ranger TeaVP1 12/12C', None, None, 17.99, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'Ritas Lime-A-Rita 1/16C', None, None, 2.49, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'The Beast Tea Original 1/24C', None, None, 3.79, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'The Beast Unleashed Mean Green 1/16C', None, None, 2.49, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'The Beast Unleashed Variety 1 12/12C SC', None, None, 16.99, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'Twisted Tea 12/12C', None, 18.49, None, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'White Claw Variety Pk HrdSeltzer 12/12C SC', None, 17.99, None, None, None, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'New Belgium Voodoo Ranger Tea 1/24C', None, None, 3.99, None, None, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'New Belgium Voodoo Ranger TeaVP1 12/12C', None, None, 17.99, None, None, None, None, None, None, None),
+    ('Beyond Beer-Low', 'Ritas Lime-A-Rita 1/16C', None, None, 2.49, None, None, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'The Beast Tea Original 1/24C', None, None, 3.79, None, None, None, None, None, None, None),
+    ('Beyond Beer-Sweet FAB', 'The Beast Unleashed Mean Green 1/16C', None, None, 2.49, None, None, None, None, None, None, None),
+    ('Beyond Beer-Sweet FAB', 'The Beast Unleashed Variety 1 12/12C SC', None, None, 16.99, None, None, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'Twisted Tea 12/12C', None, 18.49, None, None, None, None, None, None, None, None),
+    ('Beyond Beer-Seltzer', 'White Claw Variety Pk HrdSeltzer 12/12C SC', None, 17.99, None, None, None, None, None, None, None, None),
     ('Super Premium', 'Wicked Weed Pernicious IPA 1/19C', None, None, 3.99, None, None, None, None, None, None, None),
     ('Super Premium', 'Wicked Weed Pernicious IPA 6/12C', None, None, 15.99, None, None, None, None, None, None, None),
     ('Core', 'Yuengling Traditional Lager 1/24C', None, None, 3.39, None, None, None, None, None, None, None),
@@ -10352,18 +10352,20 @@ def _get_mkt_ws_memory(market_key: str) -> dict:
 
 
 @st.cache_data(show_spinner=False)
-def _load_wamp_reference() -> dict:
-    """Load UPC->WAMP reference from product_wamps.csv. Cached for session lifetime."""
+def _load_wamp_reference() -> tuple:
+    """Load UPC->WAMP and Name->WAMP from product_wamps.csv. Returns (upc_dict, name_dict)."""
     import os as _osw
     _path = _osw.path.join(_osw.path.dirname(_osw.path.abspath(__file__)), "product_wamps.csv")
     if not _osw.path.exists(_path):
-        return {}
+        return {}, {}
     try:
         _df = pd.read_csv(_path, dtype=str)
         _df["UPC"] = _df["UPC"].str.strip().str.zfill(12)
-        return dict(zip(_df["UPC"], _df["WAMP"]))
+        _upc_map  = dict(zip(_df["UPC"],  _df["WAMP"]))
+        _name_map = dict(zip(_df["Name"].str.strip(), _df["WAMP"])) if "Name" in _df.columns else {}
+        return _upc_map, _name_map
     except Exception:
-        return {}
+        return {}, {}
 
 
 def _load_all_survey_from_sheets() -> pd.DataFrame:
@@ -10477,22 +10479,23 @@ def load_survey_pricing(market_key: str, _v: int = 3):
                                     _upc_wamp_df["WAMP"]))
             _upc_wamp    = dict(zip(_upc_wamp_df["UPC"].astype(str).str.strip(),
                                     _upc_wamp_df["WAMP"]))
-            _wamp_ref = _load_wamp_reference()  # UPC->WAMP from product_wamps.csv
+            _wamp_ref, _name_wamp_ref = _load_wamp_reference()  # UPC->WAMP and Name->WAMP
             def _fix_wamp(row):
-                # CSV reference is most authoritative — check it FIRST before accepting
-                # any submitted WAMP value (sheet may say "Core" for NABLAB products)
+                # CSV reference is most authoritative — check UPC then Name
                 upc = str(row.get("UPC", "")).strip().zfill(12)
                 if upc in _wamp_ref:
                     return _wamp_ref[upc]
+                prod = str(row.get("Product", "")).strip()
+                if prod in _name_wamp_ref:
+                    return _name_wamp_ref[prod]
                 # Try market UPC list
                 if upc in _upc_wamp:
                     return _upc_wamp[upc]
-                # Accept submitted WAMP if it is valid
+                # Accept submitted WAMP if valid
                 w = str(row.get("WAMP", "")).strip()
                 if w in _valid_wamps:
                     return w
-                # Try exact product name match
-                prod = str(row.get("Product", "")).strip()
+                # Try exact product name from market list
                 if prod in _prod_wamp:
                     return _prod_wamp[prod]
                 # Partial match

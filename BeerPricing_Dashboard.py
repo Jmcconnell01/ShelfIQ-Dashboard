@@ -10573,7 +10573,7 @@ def compute_presales_pivot(survey_df_json: str) -> str:
 
 
 @st.cache_data(show_spinner=False)
-@st.cache_data(show_spinner=False)
+@st.cache_data(show_spinner=False, max_entries=500)
 def _make_barcode_b64(upc_str: str, height_px: int = 80) -> str | None:
     """Cached UPC-A / EAN-13 barcode image generator.
     Expects a 12-digit UPC-A string (already normalized by normalize_upc).
@@ -10614,8 +10614,7 @@ def _make_barcode_b64(upc_str: str, height_px: int = 80) -> str | None:
     except Exception:
         return None
 
-@st.cache_data(show_spinner=False)
-@st.cache_data(show_spinner=False)
+@st.cache_data(show_spinner=False, max_entries=500)
 def _make_barcode_b64_from_font(code_str: str, height_px: int = 80) -> str | None:
     """Cached IDAutomation font-string → UPC-A barcode image."""
     import re as _re2
@@ -12183,6 +12182,23 @@ with tab5:
         # Cached market-level wholesaler memory from past submissions
         _mkt_ws_memory = _get_mkt_ws_memory(sel_upc_market)
 
+        # Pre-warm barcode cache in background so Show Barcode is instant
+        # Uses st.cache_data so it only runs once per unique UPC set
+        @st.cache_data(show_spinner=False, max_entries=50)
+        def _prewarm_barcodes(upcs: tuple) -> int:
+            """Pre-generate all barcodes for a scan list into the cache."""
+            count = 0
+            for upc in upcs:
+                upc_s = str(upc).strip()
+                if len(upc_s) >= 11:
+                    _make_barcode_b64(upc_s)
+                    count += 1
+            return count
+
+        # Fire pre-warm asynchronously (Streamlit runs this after UI renders)
+        _all_upcs = tuple(str(r[UPC]).strip() for _, r in scan_df.iterrows())
+        _prewarm_barcodes(_all_upcs)
+
         for idx_pos, (i, row) in enumerate(scan_df.iterrows()):
             # Generate header and barcode inline — no caching, always fresh
             _prod = str(row["Product"]).strip()
@@ -12203,17 +12219,22 @@ with tab5:
                 f"<span style='font-size:0.8rem;color:grey'>{_wamp}</span></span>"
                 f"</div>"
             )
-            _b64 = _make_barcode_b64(_upc) if len(_upc) >= 11 else _make_barcode_b64_from_font(_bc)
-            if _b64:
-                barcode_html = (
-                    f"<div style='background:white;border:1px solid #ddd;border-radius:6px;"
-                    f"padding:8px 12px;margin:4px 0 8px;text-align:center'>"
-                    f"<img src='data:image/png;base64,{_b64}' "
-                    f"style='width:100%;max-width:580px;height:85px;object-fit:contain;"
-                    f"image-rendering:crisp-edges;display:block;margin:0 auto'></div>"
-                )
+            # Only generate barcode when user expands it — major perf win on 199 products
+            _show_bc = st.session_state.get(f"show_bc_{ss_key}_{i}", False)
+            if _show_bc:
+                _b64 = _make_barcode_b64(_upc) if len(_upc) >= 11 else _make_barcode_b64_from_font(_bc)
+                if _b64:
+                    barcode_html = (
+                        f"<div style='background:white;border:1px solid #ddd;border-radius:6px;"
+                        f"padding:8px 12px;margin:4px 0 8px;text-align:center'>"
+                        f"<img src='data:image/png;base64,{_b64}' "
+                        f"style='width:100%;max-width:580px;height:85px;object-fit:contain;"
+                        f"image-rendering:crisp-edges;display:block;margin:0 auto'></div>"
+                    )
+                else:
+                    barcode_html = f"<p style='font-size:0.75rem;color:grey'>UPC: {_upc or _bc}</p>"
             else:
-                barcode_html = f"<p style='font-size:0.75rem;color:grey'>UPC: {_upc or _bc}</p>"
+                barcode_html = f"<p style='font-size:0.75rem;color:#888;margin:2px 0 6px'>UPC: {_upc}</p>"
 
 
             _is_done    = st.session_state.get(f"{ss_key}_done_{i}", False)
@@ -12280,6 +12301,13 @@ with tab5:
                 f"{header_html}{barcode_html}</div>",
                 unsafe_allow_html=True
             )
+
+            # Show barcode button (outside form so it reruns immediately)
+            if not _show_bc:
+                if st.button("🔍 Show Barcode", key=f"bc_btn_{ss_key}_{i}",
+                             help="Show scannable barcode"):
+                    st.session_state[f"show_bc_{ss_key}_{i}"] = True
+                    st.rerun()
 
             # st.form prevents rerun on every keystroke — only reruns on Save/Done
             with st.form(key=f"form_{ss_key}_{i}", border=False):

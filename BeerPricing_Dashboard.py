@@ -11901,51 +11901,46 @@ with tab5:
                     _pg_store_data  = _pg_norm[_norm_sel]
                     _pg_store_label = _norm_sel
 
-        scan_df = get_upc_df(sel_upc_market).copy()
+        # Load UPC master list ONCE, build O(1) lookup dict — never call inside loops
+        _upc_master_df = get_upc_df(sel_upc_market)
+        _master_by_upc = {str(r["UPC"]).strip(): r.to_dict()
+                          for _, r in _upc_master_df.iterrows()}
+        scan_df = _upc_master_df.copy()
 
-        # Build scan list — always use planogram rows directly if store has one
+        # Build scan list from planogram if store has one
         _using_planogram = False
-        if _pg_store_data and len(_pg_store_data.get('rows', [])) > 0:
+        if _pg_store_data and len(_pg_store_data.get("rows", [])) > 0:
             import re as _re_pg2
-            re = _re_pg2
             _rows = []
-            for _, _pr in _pg_store_data['rows'].iterrows():
-                _name = str(_pr.get('Name', '')).strip()
+            for _, _pr in _pg_store_data["rows"].iterrows():
+                _name = str(_pr.get("Name", "")).strip()
                 if not _name:
                     continue
-                # Use the Barcode column (11-digit) as the primary UPC for scanning
-                _barcode = str(_pr.get('Barcode', '')).strip().split('.')[0]
-                # Also keep the short UPC as fallback, stripping any letter suffixes
-                _upc_raw = re.sub(r'[A-Za-z]+$', '',
-                                  str(_pr.get('UPC', '')).strip().split('.')[0])
-                # Prefer the longer Barcode value for generation (always 11 digits)
-                _upc = _barcode if len(_barcode) >= 11 else _upc_raw
-                # Extract package string from product name tail
+                _barcode = str(_pr.get("Barcode", "")).strip().split(".")[0]
+                _upc_raw = _re_pg2.sub(r"[A-Za-z]+$", "",
+                                       str(_pr.get("UPC", "")).strip().split(".")[0])
+                _upc  = _barcode if len(_barcode) >= 11 else _upc_raw
                 _pkg_m = _re_pg2.search(
-                    r'(\d+/[\d.]+\w*(?:\s*x\d+)?)\s*$', _name, _re_pg2.IGNORECASE)
-                _pkg = _pkg_m.group(1).strip() if _pkg_m else ''
-                # Use Family as WAMP
-                _wamp  = str(_pr.get('Family', '')).strip()
-                _brand = str(_pr.get('Family', '')).strip()
-                # Try to enrich from UPC master list for full product name & wholesaler
-                _upc_master = get_upc_df(sel_upc_market)
-                _upc_match  = _upc_master[_upc_master["UPC"].astype(str).str.strip() == _upc]
-                if not _upc_match.empty:
-                    _master_row = _upc_match.iloc[0]
-                    _name = str(_master_row["Product"]).strip() or _name
-                    _pkg  = str(_master_row["Package"]).strip() or _pkg
-                    _wamp = str(_master_row["WAMP"]).strip()    or _wamp
-                    _ws   = str(_master_row["Wholesaler"]).strip()
+                    r"(\d+/[\d.]+\w*(?:\s*x\d+)?)\s*$", _name, _re_pg2.IGNORECASE)
+                _pkg  = _pkg_m.group(1).strip() if _pkg_m else ""
+                _wamp = str(_pr.get("Family", "")).strip()
+                # O(1) dict lookup instead of DataFrame filter per row
+                _mr = _master_by_upc.get(_upc)
+                if _mr:
+                    _name = str(_mr.get("Product", "")).strip() or _name
+                    _pkg  = str(_mr.get("Package", "")).strip() or _pkg
+                    _wamp = str(_mr.get("WAMP",    "")).strip() or _wamp
+                    _ws   = str(_mr.get("Wholesaler", "")).strip()
                 else:
-                    _ws = ''
+                    _ws = ""
                 _rows.append({
-                    'WAMP':       _wamp,
-                    'Brand':      _brand,
-                    'Product':    _name,
-                    'Wholesaler': _ws,
-                    'Package':    _pkg,
-                    'UPC':        _upc,
-                    'Barcode':    _barcode,
+                    "WAMP":       _wamp,
+                    "Brand":      _wamp,
+                    "Product":    _name,
+                    "Wholesaler": _ws,
+                    "Package":    _pkg,
+                    "UPC":        _upc,
+                    "Barcode":    _barcode,
                 })
             if _rows:
                 scan_df = pd.DataFrame(_rows)
@@ -12181,23 +12176,6 @@ with tab5:
         # Build a market-level Product→Wholesaler memory from all past submissions.
         # Cached market-level wholesaler memory from past submissions
         _mkt_ws_memory = _get_mkt_ws_memory(sel_upc_market)
-
-        # Pre-warm barcode cache in background so Show Barcode is instant
-        # Uses st.cache_data so it only runs once per unique UPC set
-        @st.cache_data(show_spinner=False, max_entries=50)
-        def _prewarm_barcodes(upcs: tuple) -> int:
-            """Pre-generate all barcodes for a scan list into the cache."""
-            count = 0
-            for upc in upcs:
-                upc_s = str(upc).strip()
-                if len(upc_s) >= 11:
-                    _make_barcode_b64(upc_s)
-                    count += 1
-            return count
-
-        # Fire pre-warm asynchronously (Streamlit runs this after UI renders)
-        _all_upcs = tuple(str(r[UPC]).strip() for _, r in scan_df.iterrows())
-        _prewarm_barcodes(_all_upcs)
 
         for idx_pos, (i, row) in enumerate(scan_df.iterrows()):
             # Generate header and barcode inline — no caching, always fresh

@@ -10405,7 +10405,7 @@ def _load_all_survey_from_sheets() -> pd.DataFrame:
 
 
 @st.cache_data(ttl=60, show_spinner=False)
-def load_survey_pricing(market_key: str):
+def load_survey_pricing(market_key: str, _v: int = 3):
     """Load submitted survey prices from Google Sheets for the given market."""
     import re as _re_sp
     try:
@@ -11084,7 +11084,7 @@ with tab1:
         st.info(f"📋 **{sel_mkt}** — No competitor pricing data loaded yet. "
                 f"Use the UPC Scanner tab to collect prices and submit a survey.")
     else:
-        survey_df, all_chains = load_survey_pricing(sel_mkt)
+        survey_df, all_chains = load_survey_pricing(sel_mkt, _v=3)
         _using_live_data = not survey_df.empty
 
 
@@ -11098,18 +11098,18 @@ with tab1:
                 wamp, product = row[0], row[1]
                 _pkg_match = _re_pkg.search(r"(\d+/\d+[A-Za-z]+(?:\s*x\d+)?)", str(product))
                 _pkg = _pkg_match.group(1) if _pkg_match else str(product)
+                # Determine effective WAMP for this product (don't mutate loop var)
+                _prod_l = product.lower()
+                _eff_wamp = "NABLAB" if any(x in _prod_l for x in (
+                    "zero", "0.0", " na ", "non-alc", "corona na",
+                    "heineken 0", "odouls", "nablab")) else wamp
                 for ci, comp in enumerate(competitors):
                     price = row[3 + ci] if (3 + ci) < len(row) else None
                     if price is not None:
-                        # Override WAMP for NA/Zero products
-                        _prod_l = product.lower()
-                        if any(x in _prod_l for x in ("zero", "0.0", " na ", "non-alc",
-                                "corona na", "heineken 0", "odouls", "nablab")):
-                            wamp = "NABLAB"
                         _base_rows.append({
-                            "WAMP": wamp, "Product": product,
+                            "WAMP": _eff_wamp, "Product": product,
                             "Competitor": comp, "Single": price,
-                            "PkgGroup": pkg_group(_pkg, wamp, product),
+                            "PkgGroup": pkg_group(_pkg, _eff_wamp, product),
                             "UPC": "", "Brand": "", "Wholesaler": "",
                         })
             if _base_rows:

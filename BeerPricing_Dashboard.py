@@ -10444,7 +10444,7 @@ def load_survey_pricing(market_key: str):
         # Normalise WAMP — must be a valid WAMP category.
         # If the sheet stored a brand name instead, look it up from the UPC master list.
         _valid_wamps = {"Core", "Core Plus", "Value", "Premium", "Super Premium",
-                        "Beyond Beer", "Wine", "Other"}
+                        "Beyond Beer", "Wine", "NABLAB", "Other"}
         _wamp_col = df.get("WAMP", pd.Series(dtype=str)) if "WAMP" in df.columns else pd.Series(dtype=str)
         _bad_wamp = ~df["WAMP"].isin(_valid_wamps) if "WAMP" in df.columns else pd.Series([True]*len(df))
         if _bad_wamp.any():
@@ -10469,8 +10469,13 @@ def load_survey_pricing(market_key: str):
                 for _p, _w in _prod_wamp.items():
                     if prod.startswith(_p) or _p.startswith(prod):
                         return _w
-                return "Core"  # safe default
+                return ""  # unknown WAMP — exclude from heatmap
             df["WAMP"] = df.apply(_fix_wamp, axis=1)
+
+        # Drop rows with no valid WAMP — don't assign them to a random category
+        df = df[df["WAMP"].fillna("").str.strip().ne("")]
+        if df.empty:
+            return pd.DataFrame(), []
 
         df["PkgGroup"] = df.apply(
             lambda r: pkg_group(r.get("Package", ""), r.get("WAMP", ""), r.get("Brand", "") or r.get("Product", "")), axis=1

@@ -11163,6 +11163,35 @@ with tab1:
                         survey_df  = pd.concat([survey_df, _base_unsurveyed], ignore_index=True)
                         all_chains = sorted(survey_df["Competitor"].dropna().unique())
 
+        # Re-apply WAMP correction on the fully merged survey_df
+        # This catches both live survey rows AND benchmark rows that have wrong WAMPs
+        if not survey_df.empty and "Product" in survey_df.columns:
+            _wamp_ref2, _name_ref2 = _load_wamp_reference()
+            def _refix_wamp(row):
+                prod = str(row.get("Product", "")).strip()
+                upc  = str(row.get("UPC", "")).strip().zfill(12)
+                # UPC lookup first
+                if upc in _wamp_ref2:
+                    return _wamp_ref2[upc]
+                # Exact name
+                if prod in _name_ref2:
+                    return _name_ref2[prod]
+                # Strip SC/SCP suffix
+                stripped = prod.removesuffix(" SC").removesuffix(" SCP").strip()
+                if stripped in _name_ref2:
+                    return _name_ref2[stripped]
+                # Keep existing WAMP
+                return str(row.get("WAMP", "")).strip()
+            survey_df["WAMP"] = survey_df.apply(_refix_wamp, axis=1)
+            # Rebuild PkgGroup with corrected WAMPs
+            survey_df["PkgGroup"] = survey_df.apply(
+                lambda r: pkg_group(r.get("Package", ""), r.get("WAMP", ""),
+                                    r.get("Brand", "") or r.get("Product", "")), axis=1
+            )
+            # Drop rows with no valid WAMP
+            survey_df = survey_df[survey_df["WAMP"].fillna("").str.strip().ne("")]
+            all_chains = sorted(survey_df["Competitor"].dropna().unique()) if not survey_df.empty else []
+
         # Always fill any blank Wholesaler values from the UPC master list.
         # Submitted surveys may have blank Wholesaler if the rep didn't touch the dropdown,
         # so we ALWAYS backfill from UPC->Wholesaler and Product->Wholesaler maps.

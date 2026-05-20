@@ -10488,6 +10488,10 @@ def load_survey_pricing(market_key: str, _v: int = 3):
                 prod = str(row.get("Product", "")).strip()
                 if prod in _name_wamp_ref:
                     return _name_wamp_ref[prod]
+                # Try stripping common suffixes added by survey (e.g. " SC", " SCP")
+                _prod_stripped = prod.rstrip().removesuffix(" SC").removesuffix(" SCP").strip()
+                if _prod_stripped in _name_wamp_ref:
+                    return _name_wamp_ref[_prod_stripped]
                 # Try market UPC list
                 if upc in _upc_wamp:
                     return _upc_wamp[upc]

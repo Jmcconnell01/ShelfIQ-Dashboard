@@ -10368,14 +10368,23 @@ def _load_wamp_reference() -> tuple:
     import os as _osw
     _path = _osw.path.join(_osw.path.dirname(_osw.path.abspath(__file__)), "product_wamps.csv")
     if not _osw.path.exists(_path):
+        # CSV not found — return empty dicts (keyword fallback handles common cases)
         return {}, {}
     try:
         _df = pd.read_csv(_path, dtype=str)
         _df["UPC"] = _df["UPC"].str.strip().str.zfill(12)
         _upc_map  = dict(zip(_df["UPC"],  _df["WAMP"]))
-        _name_map = dict(zip(_df["Name"].str.strip(), _df["WAMP"])) if "Name" in _df.columns else {}
+        _name_map = {}
+        if "Name" in _df.columns:
+            _df["Name"] = _df["Name"].str.strip()
+            _name_map = dict(zip(_df["Name"], _df["WAMP"]))
+            # Also index by stripped name (without SC/SCP suffix)
+            _df["_stripped"] = _df["Name"].str.removesuffix(" SC").str.removesuffix(" SCP").str.strip()
+            for _, row in _df[_df["_stripped"] != _df["Name"]].iterrows():
+                if row["_stripped"] not in _name_map:
+                    _name_map[row["_stripped"]] = row["WAMP"]
         return _upc_map, _name_map
-    except Exception:
+    except Exception as _e:
         return {}, {}
 
 
@@ -11103,6 +11112,12 @@ with tab1:
                 f"Use the UPC Scanner tab to collect prices and submit a survey.")
     else:
         survey_df, all_chains = load_survey_pricing(sel_mkt, _v=3)
+        # Debug: show WAMP reference status
+        _uref_test, _nref_test = _load_wamp_reference()
+        if not _uref_test and not _nref_test:
+            st.warning("⚠️ product_wamps.csv not found — WAMP grouping may be incorrect. Add the file to your GitHub repo.")
+        else:
+            st.caption(f"✅ WAMP reference loaded: {len(_uref_test):,} UPCs, {len(_nref_test):,} names")
         _using_live_data = not survey_df.empty
 
 

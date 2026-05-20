@@ -10472,7 +10472,19 @@ def load_survey_pricing(market_key: str):
                 return ""  # unknown WAMP — exclude from heatmap
             df["WAMP"] = df.apply(_fix_wamp, axis=1)
 
-        # Drop rows with no valid WAMP — don't assign them to a random category
+        # Override WAMP for NA/Zero products regardless of submitted value
+        _nablab_keywords = ("zero", "non-alc", "non alc", "alcohol free",
+                            "0.0", "heineken 0", "corona na", "budweiser zero",
+                            "athletic brew", "nablab", "odouls", "o douls",
+                            "sharp's", "st. pauli girl n", "na 1/", "na 6/",
+                            "na 12/", " na ")
+        _nablab_mask = df["Product"].fillna("").str.lower().apply(
+            lambda p: any(x in p for x in _nablab_keywords)
+        )
+        if _nablab_mask.any():
+            df.loc[_nablab_mask, "WAMP"] = "NABLAB"
+
+        # Drop rows with no valid WAMP
         df = df[df["WAMP"].fillna("").str.strip().ne("")]
         if df.empty:
             return pd.DataFrame(), []
@@ -11089,6 +11101,11 @@ with tab1:
                 for ci, comp in enumerate(competitors):
                     price = row[3 + ci] if (3 + ci) < len(row) else None
                     if price is not None:
+                        # Override WAMP for NA/Zero products
+                        _prod_l = product.lower()
+                        if any(x in _prod_l for x in ("zero", "0.0", " na ", "non-alc",
+                                "corona na", "heineken 0", "odouls", "nablab")):
+                            wamp = "NABLAB"
                         _base_rows.append({
                             "WAMP": wamp, "Product": product,
                             "Competitor": comp, "Single": price,

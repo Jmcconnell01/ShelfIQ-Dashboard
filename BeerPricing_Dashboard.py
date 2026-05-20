@@ -10167,6 +10167,17 @@ def get_upc_df(market: str = "1 · Charleston"):
     df = pd.DataFrame(raw, columns=["WAMP", "Brand", "Product", "Wholesaler", "Package", "UPC", "Barcode"])
     # ── Normalize all UPCs to 12-digit UPC-A ────────────────────────────────
     df["UPC"] = df["UPC"].apply(normalize_upc)
+    _uref, _nref = _load_wamp_reference()
+    if _uref or _nref:
+        def _wamp_from_ref(row):
+            u = str(row["UPC"]).strip().zfill(12)
+            if u in _uref: return _uref[u]
+            p = str(row["Product"]).strip()
+            if p in _nref: return _nref[p]
+            s = p.removesuffix(" SC").removesuffix(" SCP").strip()
+            if s in _nref: return _nref[s]
+            return str(row["WAMP"]).strip()
+        df["WAMP"] = df.apply(_wamp_from_ref, axis=1)
     df["Format"]   = df["Package"].apply(
         lambda p: "Singles" if str(p).startswith(("1/", "3/")) else "Packages"
     )
@@ -10472,54 +10483,24 @@ def load_survey_pricing(market_key: str, _v: int = 3):
                         "Beyond Beer-Import Styles", "Beyond Beer-Liquor",
                         "Beyond Beer-Malts And Ices", "Beyond Beer-Non Alc HB",
                         "Beyond Beer-Wine"}
-        # Always run WAMP fix — CSV reference overrides submitted values
-        if True:
-            _upc_wamp_df = get_upc_df(market_key)
-            _prod_wamp   = dict(zip(_upc_wamp_df["Product"].astype(str).str.strip(),
-                                    _upc_wamp_df["WAMP"]))
-            _upc_wamp    = dict(zip(_upc_wamp_df["UPC"].astype(str).str.strip(),
-                                    _upc_wamp_df["WAMP"]))
-            _wamp_ref, _name_wamp_ref = _load_wamp_reference()  # UPC->WAMP and Name->WAMP
-            def _fix_wamp(row):
-                # CSV reference is most authoritative — check UPC then Name
-                upc = str(row.get("UPC", "")).strip().zfill(12)
-                if upc in _wamp_ref:
-                    return _wamp_ref[upc]
-                prod = str(row.get("Product", "")).strip()
-                if prod in _name_wamp_ref:
-                    return _name_wamp_ref[prod]
-                # Try stripping common suffixes added by survey (e.g. " SC", " SCP")
-                _prod_stripped = prod.rstrip().removesuffix(" SC").removesuffix(" SCP").strip()
-                if _prod_stripped in _name_wamp_ref:
-                    return _name_wamp_ref[_prod_stripped]
-                # Try market UPC list
-                if upc in _upc_wamp:
-                    return _upc_wamp[upc]
-                # Accept submitted WAMP if valid
-                w = str(row.get("WAMP", "")).strip()
-                if w in _valid_wamps:
-                    return w
-                # Try exact product name from market list
-                if prod in _prod_wamp:
-                    return _prod_wamp[prod]
-                # Partial match
-                for _p, _w in _prod_wamp.items():
-                    if prod.startswith(_p) or _p.startswith(prod):
-                        return _w
-                return ""  # unknown WAMP — exclude from heatmap
-            df["WAMP"] = df.apply(_fix_wamp, axis=1)
-
-        # Override WAMP for NA/Zero products regardless of submitted value
-        _nablab_keywords = ("zero", "non-alc", "non alc", "alcohol free",
-                            "0.0", "heineken 0", "corona na", "budweiser zero",
-                            "athletic brew", "nablab", "odouls", "o douls",
-                            "sharp's", "st. pauli girl n", "na 1/", "na 6/",
-                            "na 12/", " na ")
-        _nablab_mask = df["Product"].fillna("").str.lower().apply(
-            lambda p: any(x in p for x in _nablab_keywords)
-        )
-        if _nablab_mask.any():
-            df.loc[_nablab_mask, "WAMP"] = "NABLAB"
+        # Apply authoritative WAMP from reference CSV to all survey rows
+        _wamp_ref_s, _name_ref_s = _load_wamp_reference()
+        def _fix_wamp(row):
+            upc  = str(row.get("UPC", "")).strip().zfill(12)
+            prod = str(row.get("Product", "")).strip()
+            if upc in _wamp_ref_s:
+                return _wamp_ref_s[upc]
+            if prod in _name_ref_s:
+                return _name_ref_s[prod]
+            stripped = prod.removesuffix(" SC").removesuffix(" SCP").strip()
+            if stripped in _name_ref_s:
+                return _name_ref_s[stripped]
+            pl = prod.lower()
+            if any(x in pl for x in ("zero", "0.0", "corona na", "heineken 0",
+                    "budweiser zero", "odouls", "nablab", " na ", "non-alc")):
+                return "NABLAB"
+            return str(row.get("WAMP", "")).strip()
+        df["WAMP"] = df.apply(_fix_wamp, axis=1)
 
         # Drop rows with no valid WAMP
         df = df[df["WAMP"].fillna("").str.strip().ne("")]
@@ -11135,11 +11116,18 @@ with tab1:
                 wamp, product = row[0], row[1]
                 _pkg_match = _re_pkg.search(r"(\d+/\d+[A-Za-z]+(?:\s*x\d+)?)", str(product))
                 _pkg = _pkg_match.group(1) if _pkg_match else str(product)
-                # Determine effective WAMP for this product (don't mutate loop var)
-                _prod_l = product.lower()
-                _eff_wamp = "NABLAB" if any(x in _prod_l for x in (
-                    "zero", "0.0", " na ", "non-alc", "corona na",
-                    "heineken 0", "odouls", "nablab")) else wamp
+                # Look up WAMP from reference CSV
+                _urc, _nrc = _load_wamp_reference()
+                _ps = product.removesuffix(" SC").removesuffix(" SCP").strip()
+                if product in _nrc:
+                    _eff_wamp = _nrc[product]
+                elif _ps in _nrc:
+                    _eff_wamp = _nrc[_ps]
+                else:
+                    _pl = product.lower()
+                    _eff_wamp = "NABLAB" if any(x in _pl for x in (
+                        "zero", "0.0", " na ", "non-alc", "corona na",
+                        "heineken 0", "odouls", "nablab")) else wamp
                 for ci, comp in enumerate(competitors):
                     price = row[3 + ci] if (3 + ci) < len(row) else None
                     if price is not None:
@@ -11162,42 +11150,6 @@ with tab1:
                     if not _base_unsurveyed.empty:
                         survey_df  = pd.concat([survey_df, _base_unsurveyed], ignore_index=True)
                         all_chains = sorted(survey_df["Competitor"].dropna().unique())
-
-        # Re-apply WAMP correction on the fully merged survey_df
-        # This catches both live survey rows AND benchmark rows that have wrong WAMPs
-        if not survey_df.empty and "Product" in survey_df.columns:
-            _wamp_ref2, _name_ref2 = _load_wamp_reference()
-            def _refix_wamp(row):
-                prod = str(row.get("Product", "")).strip()
-                upc  = str(row.get("UPC", "")).strip().zfill(12)
-                # UPC lookup first
-                if upc in _wamp_ref2:
-                    return _wamp_ref2[upc]
-                # Exact name
-                if prod in _name_ref2:
-                    return _name_ref2[prod]
-                # Strip SC/SCP suffix
-                stripped = prod.removesuffix(" SC").removesuffix(" SCP").strip()
-                if stripped in _name_ref2:
-                    return _name_ref2[stripped]
-                # Keyword fallback for NABLAB — catches NA/Zero products
-                # even when CSV name lookup fails
-                _pl = prod.lower()
-                if any(x in _pl for x in ("zero", "0.0", " na ", "non-alc",
-                        "corona na", "heineken 0", "budweiser zero",
-                        "odouls", "nablab", "alcohol free", "michelob ultra zero")):
-                    return "NABLAB"
-                # Keep existing WAMP
-                return str(row.get("WAMP", "")).strip()
-            survey_df["WAMP"] = survey_df.apply(_refix_wamp, axis=1)
-            # Rebuild PkgGroup with corrected WAMPs
-            survey_df["PkgGroup"] = survey_df.apply(
-                lambda r: pkg_group(r.get("Package", ""), r.get("WAMP", ""),
-                                    r.get("Brand", "") or r.get("Product", "")), axis=1
-            )
-            # Drop rows with no valid WAMP
-            survey_df = survey_df[survey_df["WAMP"].fillna("").str.strip().ne("")]
-            all_chains = sorted(survey_df["Competitor"].dropna().unique()) if not survey_df.empty else []
 
         # Always fill any blank Wholesaler values from the UPC master list.
         # Submitted surveys may have blank Wholesaler if the rep didn't touch the dropdown,

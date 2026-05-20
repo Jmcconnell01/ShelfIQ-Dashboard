@@ -11180,6 +11180,13 @@ with tab1:
                 stripped = prod.removesuffix(" SC").removesuffix(" SCP").strip()
                 if stripped in _name_ref2:
                     return _name_ref2[stripped]
+                # Keyword fallback for NABLAB — catches NA/Zero products
+                # even when CSV name lookup fails
+                _pl = prod.lower()
+                if any(x in _pl for x in ("zero", "0.0", " na ", "non-alc",
+                        "corona na", "heineken 0", "budweiser zero",
+                        "odouls", "nablab", "alcohol free", "michelob ultra zero")):
+                    return "NABLAB"
                 # Keep existing WAMP
                 return str(row.get("WAMP", "")).strip()
             survey_df["WAMP"] = survey_df.apply(_refix_wamp, axis=1)

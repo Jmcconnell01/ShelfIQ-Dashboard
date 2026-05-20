@@ -10470,9 +10470,8 @@ def load_survey_pricing(market_key: str, _v: int = 3):
                         "Beyond Beer-Import Styles", "Beyond Beer-Liquor",
                         "Beyond Beer-Malts And Ices", "Beyond Beer-Non Alc HB",
                         "Beyond Beer-Wine"}
-        _wamp_col = df.get("WAMP", pd.Series(dtype=str)) if "WAMP" in df.columns else pd.Series(dtype=str)
-        _bad_wamp = ~df["WAMP"].isin(_valid_wamps) if "WAMP" in df.columns else pd.Series([True]*len(df))
-        if _bad_wamp.any():
+        # Always run WAMP fix — CSV reference overrides submitted values
+        if True:
             _upc_wamp_df = get_upc_df(market_key)
             _prod_wamp   = dict(zip(_upc_wamp_df["Product"].astype(str).str.strip(),
                                     _upc_wamp_df["WAMP"]))
@@ -10480,16 +10479,18 @@ def load_survey_pricing(market_key: str, _v: int = 3):
                                     _upc_wamp_df["WAMP"]))
             _wamp_ref = _load_wamp_reference()  # UPC->WAMP from product_wamps.csv
             def _fix_wamp(row):
-                w = str(row.get("WAMP", "")).strip()
-                if w in _valid_wamps:
-                    return w
-                # Try global WAMP reference CSV first (most authoritative)
+                # CSV reference is most authoritative — check it FIRST before accepting
+                # any submitted WAMP value (sheet may say "Core" for NABLAB products)
                 upc = str(row.get("UPC", "")).strip().zfill(12)
                 if upc in _wamp_ref:
                     return _wamp_ref[upc]
                 # Try market UPC list
                 if upc in _upc_wamp:
                     return _upc_wamp[upc]
+                # Accept submitted WAMP if it is valid
+                w = str(row.get("WAMP", "")).strip()
+                if w in _valid_wamps:
+                    return w
                 # Try exact product name match
                 prod = str(row.get("Product", "")).strip()
                 if prod in _prod_wamp:

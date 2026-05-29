@@ -475,11 +475,25 @@ with tab3:
         with pf4:
             prod_pool = seg_pool if pod_seg_filter == "All" else seg_pool[seg_pool["Segment"] == pod_seg_filter]
             prod_opts = sorted(prod_pool["Product Name"].dropna().unique().tolist())
+
+            # Search box to filter the product list
+            prod_search = st.text_input("Filter by Product Name", placeholder="Type to search (e.g. Clubtails)...", key="pod_product_search")
+            matched = [p for p in prod_opts if prod_search.lower() in p.lower()] if prod_search else prod_opts
+
+            btn_col, clear_col = st.columns([1, 1])
+            with btn_col:
+                if st.button("✅ Select All Matches", key="pod_select_all", use_container_width=True):
+                    st.session_state["pod_product"] = matched
+            with clear_col:
+                if st.button("✖ Clear", key="pod_clear", use_container_width=True):
+                    st.session_state["pod_product"] = []
+
             pod_products = st.multiselect(
-                "Filter by Product Name",
+                "Selected Products",
                 options=prod_opts,
-                placeholder="Type to search & select products...",
-                key="pod_product"
+                default=st.session_state.get("pod_product", []),
+                key="pod_product",
+                label_visibility="collapsed"
             )
 
         # Apply product filters

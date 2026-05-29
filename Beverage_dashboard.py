@@ -474,8 +474,13 @@ with tab3:
             pod_seg_filter = st.selectbox("Filter by Segment", seg_opts2, key="pod_seg")
         with pf4:
             prod_pool = seg_pool if pod_seg_filter == "All" else seg_pool[seg_pool["Segment"] == pod_seg_filter]
-            prod_opts = ["All"] + sorted(prod_pool["Product Name"].dropna().unique().tolist())
-            pod_product = st.selectbox("Filter by Product Name", prod_opts, key="pod_product")
+            prod_opts = sorted(prod_pool["Product Name"].dropna().unique().tolist())
+            pod_products = st.multiselect(
+                "Filter by Product Name",
+                options=prod_opts,
+                placeholder="Type to search & select products...",
+                key="pod_product"
+            )
 
         # Apply product filters
         fp_pod = fp.copy()
@@ -485,8 +490,8 @@ with tab3:
             fp_pod = fp_pod[fp_pod["Brand"] == pod_brand]
         if pod_seg_filter != "All":
             fp_pod = fp_pod[fp_pod["Segment"] == pod_seg_filter]
-        if pod_product != "All":
-            fp_pod = fp_pod[fp_pod["Product Name"] == pod_product]
+        if pod_products:
+            fp_pod = fp_pod[fp_pod["Product Name"].isin(pod_products)]
 
         st.write("")
         col1, col2 = st.columns(2)

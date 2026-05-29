@@ -590,12 +590,20 @@ with tab3:
             st.plotly_chart(style_fig(fig3, 320), use_container_width=True)
 
         st.subheader("Full POD Detail Table")
-        group_cols = [c for c in ["Manufacturer", "Brand", "Package", "Segment"]
+        # Include store and chain so each row is store-specific
+        group_cols = [c for c in ["Chain", "_StoreLabel", "Manufacturer", "Brand", "Package", "Segment"]
                       if c in fp_pod.columns]
-        pod_full = (fp_pod.groupby(group_cols)["PlanoID"].nunique()
-                      .reset_index(name="POD Count")
-                      .sort_values("POD Count", ascending=False)
+        pod_full = (fp_pod.groupby(group_cols, dropna=False)
+                      .agg(
+                          POD_Count=("PlanoID", "nunique"),
+                          Movement=("Movement", "sum"),
+                          Facings=("Facings", "sum"),
+                      )
+                      .reset_index()
+                      .sort_values(["Chain", "_StoreLabel", "POD_Count"], ascending=[True, True, False])
                       .reset_index(drop=True))
+        # Rename for display
+        pod_full = pod_full.rename(columns={"_StoreLabel": "Store", "POD_Count": "POD Count"})
         st.dataframe(pod_full, use_container_width=True, height=380)
         st.download_button("⬇ Download CSV",
                            pod_full.to_csv(index=False).encode(),
